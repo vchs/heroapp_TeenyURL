@@ -13,6 +13,7 @@
         "hiredis": "0.1.14",
         "redis": "0.8.2",
         "restler": "2.0.1",
+        "mootools": "1.4.5",
         "async": "0.2.5",
         "idgen": "1.2.0"
     }

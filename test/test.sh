@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./node_modules/.bin/mocha $(find . -name '*-test.js')
+./node_modules/.bin/mocha -r mootools $(find . -name '*-test.js')
