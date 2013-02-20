@@ -19,10 +19,10 @@ This creates a new tiny URL with given long URL.
 
 * `keyGen` 
 
-    This is a function defined as `function keyGen(dataObject, callback)` to create the key in tiny URL for the new mapping. Here `dataObject` is passed in from `create`, and `callback` is the form as `function fn(key, err)`, where `key` is the generated key and `err` is absent if succeeded, or `key` is `null` and `err` is the detailed `Error` object if anything wrong.
+    This is a function defined as `function (dataObject, callback)` to create the key in tiny URL for the new mapping. Here `dataObject` is passed in from `create`, and `callback` is the form as `function (err, key)`, where `key` is the generated key and `err` is absent if succeeded, or `key` is `null` and `err` is the detailed `Error` object if anything wrong.
 
 * `callback` 
-    This is a function defined as `function fn(dataObject, err)` to receive the created mapping. If succeeded, `dataObject` is the instance of `DataObject` with all fields filled, and `err` is absent, or `dataObject` is `null` and `err` is the detailed `Error` object on failure.
+    This is a function defined as `function (err, dataObject)` to receive the created mapping. If succeeded, `dataObject` is the instance of `DataObject` with all fields filled, and `err` is absent, or `dataObject` is `null` and `err` is the detailed `Error` object on failure.
 
 The return value should be the same `IDataAccessor` instance.
 
@@ -37,7 +37,7 @@ This queries a mapping between a tiny URL key and the original URL.
 
 * `callback`
 
-    This is defined as `function fn(dataObject, err)` to receive the queried result. On success, `dataObject` is the instance of `DataObject` with `originalUrl` filled, other fields may be absent. If `dataObject` is `null`, it indicates the mapping is not found if `err` is absent, or some error happens if `err` is an `Error` object.
+    This is defined as `function (err, dataObject)` to receive the queried result. On success, `dataObject` is the instance of `DataObject` with `originalUrl` filled, other fields may be absent. If `dataObject` is `null`, it indicates the mapping is not found if `err` is absent, or some error happens if `err` is an `Error` object.
 
 The return value should be the same `IDataAccessor` instance.
 
@@ -55,7 +55,7 @@ This method queries the value by the specified key.
 
 * `callback`
 
-    It is defined as `function fn(value, err)` for receiving the associated value. When the pair is available in cache, `value` is the value of the key in string, and `err` is absent. If not found, `value` is `null` and `err` is absent. If `err` is some `Error` object, the operation failed and `value` must be `null`.
+    It is defined as `function (err, value)` for receiving the associated value. When the pair is available in cache, `value` is the value of the key in string, and `err` is absent. If not found, `value` is `null` and `err` is absent. If `err` is some `Error` object, the operation failed and `value` must be `null`.
 
 The return value should be the same `ICacheProvider` instance.
 
@@ -78,4 +78,4 @@ This method inserts or updates a key-value pair.
 
 * `callback`
 
-    It is defined as `function fn(err)` with the only argument to indicate whether the operation succeeds. `err` is an `Error` object to indicate failure.
+    It is defined as `function (err)` with the only argument to indicate whether the operation succeeds. `err` is an `Error` object to indicate failure.
