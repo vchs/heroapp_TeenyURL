@@ -7,6 +7,6 @@ describe("Skeleton", function () {
     });
     
     it("expect works", function () {
-        expect([]).to.be.a(Array);
+        expect([]).to.be.an(Array);
     });
 });
