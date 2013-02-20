@@ -16,7 +16,7 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-require('./lib/api').register(app);
+require('./routes/api').register(app);
 
 var port = process.env.VMC_APP_PORT || 3000;
 app.listen(port, function() {
