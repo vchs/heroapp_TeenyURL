@@ -1,0 +1,16 @@
+{
+    "name": "TinyUrl",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node app"
+    },
+    "dependencies": {
+        "express": "3.0.3",
+        "mongoose": "3.4.0",
+        "hiredis": "0.1.14",
+        "redis": "0.8.2",
+        "async": "0.2.5",
+        "idgen": "1.2.0"
+    }
+}
