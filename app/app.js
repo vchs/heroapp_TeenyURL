@@ -17,6 +17,7 @@ app.configure('development', function() {
 });
 
 require('./routes/api').register(app);
+require('./routes/redirect').register(app);
 
 var port = process.env.VMC_APP_PORT || 3000;
 app.listen(port, function() {
