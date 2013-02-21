@@ -9,6 +9,9 @@ describe("RedisCacheProvider", function () {
             requires: {
                 'redis': {
                     createClient: function () { return mockedClient; }
+                },
+                './ServiceBinding': {
+                    redisCache: {}
                 }
             }
         }).RedisCacheProvider;

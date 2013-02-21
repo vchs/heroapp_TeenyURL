@@ -6,7 +6,7 @@ exports.when = function (condition) {
             console.log("Skipped: " + description);
             describe.skip(description, tests);
         }
-    }
+    };
 };
 
 exports.asyncExpect = function (action, done, more) {
@@ -26,7 +26,7 @@ exports.asyncExpect = function (action, done, more) {
         } else if (!more) {
             done();
         }
-    }
+    };
 };
 
 exports.MockedClass = new Class({

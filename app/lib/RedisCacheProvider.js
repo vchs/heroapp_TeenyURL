@@ -1,18 +1,5 @@
-var redis = require("redis");
-
-var connInfo = {};
-// TODO detect connInfo inside CloudFoundry
-if (process.env.REDIS_CONN) {
-    var url = require("url").parse(process.env.REDIS_CONN);
-    connInfo.host = url.hostname;
-    if (url.port) {
-        connInfo.port = parseInt(url.port);
-    }
-    connInfo.auth = url.auth;
-    if (url.path && url.path.length > 1) {
-        connInfo.db = parseInt(url.path.substr(1));
-    }
-}
+var redis = require('redis');
+var services = require('./ServiceBinding');
 
 function logError(err) {
     if (err) {
@@ -26,6 +13,11 @@ function ensureCallback(callback) {
 
 function connectRedis(callback) {
     callback = ensureCallback(callback);
+
+    var connInfo = services.redisCache;
+    if (!connInfo) {
+        throw new Error("No service binding for Redis cache.");
+    }
 
     var client = redis.createClient(connInfo.port, connInfo.host);
     client.on("error", function (err) {
@@ -41,8 +33,8 @@ function connectRedis(callback) {
             callback(null, client);
         }
     });
-    if (connInfo.auth) {
-        client.auth(connInfo.auth);
+    if (connInfo.password) {
+        client.auth(connInfo.password);
     }
     return client;
 }

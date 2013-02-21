@@ -1,7 +1,8 @@
-var expect  = require('expect.js');
+var services = require('../app/lib/ServiceBinding');
+var expect = require('expect.js');
 var th = require('./helpers');
 
-th.when(process.env.REDIS_CONN)
+th.when(services.redisCache)
   .describe("RedisCacheProvider.Functional", function () {
     var provider;
     

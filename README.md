@@ -29,9 +29,10 @@ Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a c
 
 ### Functional Tests for RedisCacheProvider
 
-Set environment variable `REDIS_CONN` to be `redis://host:port` or `redis://host:port/db` to enable
-functional tests for `RedisCacheProvider`. E.g.
+To enable functional tests for `RedisCacheProvider`, set environment variable `VMC_SERVICES` to be
 
 ```bash
-REDIS_CONN=redis://localhost:6379/1 ./test.sh
+VMC_SERVICES='[{"name": "tinyurl-redis-cache", "options": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" }}]' ./test.sh
 ```
+
+Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `RedisCacheProvider` the element with `tinyurl-redis-cache` as `name` should be present.
