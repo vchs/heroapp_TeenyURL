@@ -1,5 +1,8 @@
+var url = require('url');
+var idgen = require('idgen');
+var DataAccessorFactory = require('../lib/DataAccessorFactory');
+
 exports.register = function (app) {
-    var url = require('url');
 
     function validateUrl(inputUrl) {
         var protocol = url.parse(inputUrl).protocol;
@@ -8,18 +11,37 @@ exports.register = function (app) {
         else
             return false;
     }
-    
+
     app.post("/api/create", function (req, res) {
-        var url = req.param('url'),
-            expire = req.param('expire');
+        var originalUrl = req.param('originalUrl'),
+            expireAt = req.param('expireAt');
         
-        console.log("url is: " + url);
-        console.log("expire is: " + expire);
+        console.log("originalUrl is: " + originalUrl);
+        console.log("expireAt is: " + expireAt);
 
         // check the url
-        if(validateUrl(url))
-            res.send({"result":"ok"});
-        else
-            res.send({"result":"invalid URL."});
+        if(validateUrl(originalUrl)) {
+            var dataAccess = DataAccessorFactory.build;
+
+            var keyGen = function(dataObject, callback){
+                callback(null, idgen(4));
+            };
+            var newDataObject = {};
+            newDataObject.originalUrl = originalUrl;
+            newDataObject.expireAt = expireAt;
+
+            /*dataAccess.create(newDataObject, keyGen, function(err, dataObject) {
+               if (err != null) {
+                   console.log(err);
+                   res.send({"result": "Error", "message": "Server error."});
+               } else {
+                   res.send({"result": "OK", "key": dataObject.key});
+               }
+            });*/
+            res.send({"result": "OK", "key": {"key":"abc"}.key});
+        }
+        else {
+            res.send({"result": "Error", "message": "Invalid URL."});
+        }
     });
 };
