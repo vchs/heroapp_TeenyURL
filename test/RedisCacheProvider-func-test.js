@@ -1,7 +1,8 @@
 var expect  = require('expect.js');
 var th = require('./helpers');
 
-describe.when(process.env.REDIS_CONN, "RedisCacheProvider.Functional", function () {
+th.when(process.env.REDIS_CONN)
+  .describe("RedisCacheProvider.Functional", function () {
     var provider;
     
     var KEY = "RedisCacheProvider-test-key";

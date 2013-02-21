@@ -24,7 +24,7 @@ Functional Tests
 ----------------
 
 The developer of the tests can decide whether to skip functional tests.
-Take a look at `helpers.js`, using `describe.when` to enable a certain set of tests conditionally.
+Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a certain set of tests conditionally.
 `./test.sh` will run all the tests including unit tests and functional tests.
 
 ### Functional Tests for RedisCacheProvider

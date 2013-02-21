@@ -1,9 +1,11 @@
-describe.when = function (condition, description, tests) {
-    if (condition) {
-        describe(description, tests);
-    } else {
-        console.log("Skipped: " + description);
-        describe.skip(description, tests);
+exports.when = function (condition) {
+    return condition ? {
+        describe: function (description, tests) { describe(description, tests); }
+    } : {
+        describe: function (description, tests) {
+            console.log("Skipped: " + description);
+            describe.skip(description, tests);
+        }
     }
 };
 
