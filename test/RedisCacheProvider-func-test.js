@@ -10,7 +10,7 @@ th.when(services.redisCache)
     var VAL = "RedisCacheProvider-test-val";
     
     before(function () {
-        var RedisCacheProvider = require('../app/lib/RedisCacheProvider').RedisCacheProvider;
+        var RedisCacheProvider = require('../app/lib/RedisCacheProvider');
         provider = new RedisCacheProvider();
     });
     

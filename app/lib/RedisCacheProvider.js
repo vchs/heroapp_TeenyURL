@@ -39,7 +39,7 @@ function connectRedis(callback) {
     return client;
 }
 
-exports.RedisCacheProvider = new Class({
+module.exports = new Class({
     initialize: function (callback) {
         this._client = connectRedis(callback);
     },

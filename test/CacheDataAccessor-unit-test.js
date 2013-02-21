@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var th = require('./helpers');
-var CacheDataAccessor = require('../app/lib/CacheDataAccessor.js').CacheDataAccessor;
+var CacheDataAccessor = require('../app/lib/CacheDataAccessor.js');
 
 var ID_KEY = "generated_key";
 var LONG_URL = "www.vmware.com";

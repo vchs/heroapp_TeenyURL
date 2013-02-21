@@ -14,7 +14,7 @@ describe("RedisCacheProvider", function () {
                     redisCache: {}
                 }
             }
-        }).RedisCacheProvider;
+        });
         return new RedisCacheProvider();
     }
 

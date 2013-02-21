@@ -1,4 +1,4 @@
-exports.CacheDataAccessor = new Class({
+module.exports = new Class({
 
     initialize: function (cacheProvider, dataAccessor){
         this._cacheProvider = cacheProvider;
