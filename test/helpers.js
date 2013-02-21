@@ -1,4 +1,13 @@
-exports.asyncExpect = function (action, done) {
+describe.when = function (condition, description, tests) {
+    if (condition) {
+        describe(description, tests);
+    } else {
+        console.log("Skipped: " + description);
+        describe.skip(description, tests);
+    }
+};
+
+exports.asyncExpect = function (action, done, more) {
     if (!done) {
         return action;
     }
@@ -10,7 +19,11 @@ exports.asyncExpect = function (action, done) {
         } catch (e) {
             err = e;
         }
-        err == undefined ? done() : done(err);
+        if (err) {
+            done(err);
+        } else if (!more) {
+            done();
+        }
     }
 };
 

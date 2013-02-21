@@ -20,7 +20,13 @@ function logError(err) {
     }
 }
 
+function ensureCallback(callback) {
+    return callback ? callback : function () { };
+}
+
 function connectRedis(callback) {
+    callback = ensureCallback(callback);
+
     var client = redis.createClient(connInfo.port, connInfo.host);
     client.on("error", function (err) {
         logError(err);
@@ -42,8 +48,8 @@ function connectRedis(callback) {
 }
 
 exports.RedisCacheProvider = new Class({
-    initialize: function () {
-        this._client = connectRedis();
+    initialize: function (callback) {
+        this._client = connectRedis(callback);
     },
     
     // implement ICacheProvider

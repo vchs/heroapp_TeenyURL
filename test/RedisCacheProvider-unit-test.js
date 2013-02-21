@@ -49,7 +49,7 @@ describe("RedisCacheProvider", function () {
         provider = createProvider(client);
     });
     
-    it("get the value", function (done) {
+    it("#getValue", function (done) {
         client.mock('get', function (key, callback) {
             callback(null, key);
         });
@@ -60,7 +60,7 @@ describe("RedisCacheProvider", function () {
         expect(ret).to.be(provider);
     });
     
-    it("set value without expiration", function (done) {
+    it("#setValue without expiration", function (done) {
         client.mock('set', function (key, value, callback) {
             callback(null, key, value);
         });
@@ -72,7 +72,7 @@ describe("RedisCacheProvider", function () {
         expect(ret).to.be(provider);
     });
     
-    it("set value only expiration", function (done) {
+    it("#setValue with only expiration", function (done) {
         client.mock('expireat', function (key, expiration, callback) {
             callback(null, key, expiration);
         });
@@ -85,7 +85,7 @@ describe("RedisCacheProvider", function () {
         expect(ret).to.be(provider);
     });
     
-    it("set value without value and expiration", function (done) {
+    it("#setValue without value and expiration", function (done) {
         client.mock('persist', function (key, callback) {
             callback(null, key);
         });
@@ -96,7 +96,7 @@ describe("RedisCacheProvider", function () {
         expect(ret).to.be(provider);
     });
     
-    it("set value with value and expiration", function (done) {
+    it("#setValue with value and expiration", function (done) {
         client.mock('multi', new MockedMultiObject());
         var expireAt = new Date(Date.now() + 10000);
         var ret = provider.setValue('key', 'value', expireAt, th.asyncExpect(function (err, ops) {
