@@ -29,6 +29,7 @@ This creates a new tiny URL with given long URL.
     If succeeded, `dataObject` is the instance of `DataObject` with all fields filled, and `err` is absent, or `dataObject` is `null` and `err` is the detailed `Error` object on failure.
 
 The implementation should complete the flow:
+
 1. Lookup database for `dataObject.originalUrl`, if found, goto _6_
 2. Invoke `keyGenFn` to get a new key
 3. Store dataObject with new key into database, if succeeded, goto _6_
