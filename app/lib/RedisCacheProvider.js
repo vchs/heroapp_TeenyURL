@@ -50,24 +50,25 @@ exports.RedisCacheProvider = new Class({
     
     getValue: function (key, callback) {
         this._client.get(key, callback);
+        return this;
     },
     
     setValue: function (key, value, expireAt, callback) {
-        var expiration = expireAt instanceof Date ? expireAt.valueOf() : null;
+        var expiration = expireAt instanceof Date ? Math.floor(expireAt.valueOf() / 1000) : null;
         if (value == null) {
             if (expiration) {
                 this._client.expireat(key, expiration, callback);
             } else {
                 this._client.persist(key, callback);
             }
+        } else if (expiration) {
+            this._client.multi()
+                        .set(key, value)
+                        .expireat(key, expiration)
+                        .exec(callback);
         } else {
-            this._client.set(key, value, function (err) {
-                if (!err && expiration) {
-                    this._client.expireat(key, expiration, callback);
-                } else {
-                    callback(err);
-                }
-            });
+            this._client.set(key, value, callback);
         }
+        return this;
     }
 });
