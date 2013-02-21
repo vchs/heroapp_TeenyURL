@@ -26,7 +26,7 @@ module.exports = new Class({
             if (value == null){
                 self._dataAccessor.fetch(key, callback);
             }else{
-                var dataObject = {key: key, originalurl: value};
+                var dataObject = {key: key, originalUrl: value};
                 callback(err, dataObject);
             }
         });
