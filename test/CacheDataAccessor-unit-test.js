@@ -1,7 +1,9 @@
-var should = require('should');
+var expect = require('expect.js');
+var th = require('./helpers');
 var CacheDataAccessor = require('../app/lib/CacheDataAccessor.js').CacheDataAccessor;
 
-var cacheDataAccessor;
+var ID_KEY = "generated_key";
+var LONG_URL = "www.vmware.com";
 
 var MockDataAccessor = new Class({
     initialize: function(){
@@ -11,7 +13,9 @@ var MockDataAccessor = new Class({
     create: function(dataObject, keyGen, callback){
         this.data[keyGen] = dataObject.originalurl;
         dataObject.key = keyGen;
-        callback(null, dataObject);
+        process.nextTick(function(){
+            callback(null, dataObject);
+        });
     },
 
     fetch: function(key, callback){
@@ -19,9 +23,10 @@ var MockDataAccessor = new Class({
         var newDataObject = {};
         newDataObject.key = key;
         newDataObject.originalurl = url;
-        callback(null, newDataObject);
+        process.nextTick(function(){
+           callback(null, newDataObject);
+        });
     }
-
 });
 
 var MockCacheProvider = new Class({
@@ -38,32 +43,42 @@ var MockCacheProvider = new Class({
     }
 });
 
-var mockDA = new MockDataAccessor();
-var mockCP = new MockCacheProvider();
-cacheDataAccessor = new CacheDataAccessor(mockCP, mockDA);
+var mockDA, mockCP, cacheDataAccessor;
 
 describe("CacheDataAccessor", function () {
-    it("can create one new CacheDataAccessor object", function(){
-        var mockDataAccessor = 1;
-        var mockCacheProvider = 2;
-        var cacheDataAccessor = new CacheDataAccessor(mockCacheProvider, mockDataAccessor);
-        cacheDataAccessor._cacheProvider.should.equal(2);
-        cacheDataAccessor._dataAccessor.should.equal(1);
+
+    beforeEach(function(){
+        mockDA = new MockDataAccessor();
+        mockCP = new MockCacheProvider();
+        cacheDataAccessor = new CacheDataAccessor(mockCP, mockDA);
     });
 
-    it("can create new tiny url", function(){
+    it("can create new tiny url", function(done){
         var newDataObject = {};
-        newDataObject.originalurl = "www.vmware.com";
-        var idkey = "generated_key";
-        cacheDataAccessor.create(newDataObject, idkey, function(err, dataObject){
-            dataObject.key.should.equal(idkey);
-        });
+        newDataObject.originalurl = LONG_URL;
+        var idkey = ID_KEY;
+        var ret = cacheDataAccessor.create(newDataObject, idkey, th.asyncExpect(function(err, dataObject){
+            expect(err).to.be(null);
+            expect(dataObject.key).to.eql(idkey);
+        }, done));
+        expect(ret).to.be(cacheDataAccessor);
     });
 
-    it("can fetch the original url according to the tiny one", function(){
-        cacheDataAccessor.fetch("generated_key", function(err, dataObject){
-            dataObject.originalurl.should.equal("www.vmware.com");
-        });
+    it("can fetch the original url when cache has the item", function(done){
+        mockCP.cache[ID_KEY] = LONG_URL;
+        var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
+            expect(err).to.be(null);
+            expect(dataObject.originalurl).to.eql(LONG_URL);
+        }, done));
+        expect(ret).to.be(cacheDataAccessor);
     });
 
+    it("can fetch the original url when cache has not but db has it", function(done){
+        mockDA.data[ID_KEY] = LONG_URL;
+        var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
+            expect(err).to.be(null);
+            expect(dataObject.originalurl).to.eql(LONG_URL);
+        }, done));
+        expect(ret).to.be(cacheDataAccessor);
+    });
 });

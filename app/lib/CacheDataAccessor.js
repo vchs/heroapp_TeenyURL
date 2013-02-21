@@ -9,7 +9,7 @@ exports.CacheDataAccessor = new Class({
 
     create: function (dataObject, keyGen, callback) {
         var self = this;
-        self._dataAccessor.create(dataObject, keyGen, function(err, createdDataObject){
+        this._dataAccessor.create(dataObject, keyGen, function(err, createdDataObject){
             if (err != null){
                 callback(err);
             }else{
@@ -17,11 +17,12 @@ exports.CacheDataAccessor = new Class({
                 callback(err, createdDataObject);
             }
         });
+        return this;
     },
 
     fetch: function (key, callback) {
         var self = this;
-        self._cacheProvider.getValue(key, function(err, value){
+        this._cacheProvider.getValue(key, function(err, value){
             if (value == null){
                 self._dataAccessor.fetch(key, callback);
             }else{
@@ -31,5 +32,6 @@ exports.CacheDataAccessor = new Class({
                 callback(err, dataObject);
             }
         });
+        return this;
     }
 });
