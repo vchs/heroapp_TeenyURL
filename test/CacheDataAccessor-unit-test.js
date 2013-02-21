@@ -53,32 +53,36 @@ describe("CacheDataAccessor", function () {
         cacheDataAccessor = new CacheDataAccessor(mockCP, mockDA);
     });
 
-    it("can create new tiny url", function(done){
-        var newDataObject = {};
-        newDataObject.originalurl = LONG_URL;
-        var idkey = ID_KEY;
-        var ret = cacheDataAccessor.create(newDataObject, idkey, th.asyncExpect(function(err, dataObject){
-            expect(err).to.be(null);
-            expect(dataObject.key).to.eql(idkey);
-        }, done));
-        expect(ret).to.be(cacheDataAccessor);
+    describe("#create", function(){
+        it("can create new tiny url", function(done){
+            var newDataObject = {};
+            newDataObject.originalurl = LONG_URL;
+            var idkey = ID_KEY;
+            var ret = cacheDataAccessor.create(newDataObject, idkey, th.asyncExpect(function(err, dataObject){
+                expect(err).to.be(null);
+                expect(dataObject.key).to.eql(idkey);
+            }, done));
+            expect(ret).to.be(cacheDataAccessor);
+        });
     });
 
-    it("can fetch the original url when cache has the item", function(done){
-        mockCP.cache[ID_KEY] = LONG_URL;
-        var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
-            expect(err).to.be(null);
-            expect(dataObject.originalurl).to.eql(LONG_URL);
-        }, done));
-        expect(ret).to.be(cacheDataAccessor);
-    });
+    describe("#fetch", function(){
+        it("can fetch the original url when cache has the item", function(done){
+            mockCP.cache[ID_KEY] = LONG_URL;
+            var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
+                expect(err).to.be(null);
+                expect(dataObject.originalurl).to.eql(LONG_URL);
+            }, done));
+            expect(ret).to.be(cacheDataAccessor);
+        });
 
-    it("can fetch the original url when cache has not but db has it", function(done){
-        mockDA.data[ID_KEY] = LONG_URL;
-        var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
-            expect(err).to.be(null);
-            expect(dataObject.originalurl).to.eql(LONG_URL);
-        }, done));
-        expect(ret).to.be(cacheDataAccessor);
+        it("can fetch the original url when cache has not but db has it", function(done){
+            mockDA.data[ID_KEY] = LONG_URL;
+            var ret = cacheDataAccessor.fetch(ID_KEY, th.asyncExpect(function(err, dataObject){
+                expect(err).to.be(null);
+                expect(dataObject.originalurl).to.eql(LONG_URL);
+            }, done));
+            expect(ret).to.be(cacheDataAccessor);
+        });
     });
 });
