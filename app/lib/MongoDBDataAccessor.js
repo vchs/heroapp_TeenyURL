@@ -1,24 +1,24 @@
 var mongoose = require('mongoose');
+var services = require('./ServiceBinding');
 var async = require('async');
-var TinyUrl = require('./models/tinyurl');
+var TinyUrl = require('./models/TinyUrl');
 
-var uri = process.env.MONGODB_CONN || 'mongodb://localhost/test'
-mongoose.connect(uri);
+mongoose.connect(services.mongoDb.url);
 
-exports.MongoDBDataAccessor = new Class({
+module.exports = new Class({
 
     // implements IDataAccessor
     create: function (dataObject, keyGen, callback) {
       var succeed = false;
       var rounds = 0;
       var MAX_ROUNDS = 200;
-      var tinyUrl = new TinyUrl.model;
+      var tinyUrl = new TinyUrl;
       tinyUrl.importFrom(dataObject);
       async.whilst(
         function() { return succeed == false && rounds < MAX_ROUNDS },
         function(iterationDone) {
           rounds ++;
-          TinyUrl.model.findOne({ originalUrl : dataObject.originalUrl}, null, null, function(findError, oldEntry) {
+          TinyUrl.findOne({ originalUrl : dataObject.originalUrl}, null, null, function(findError, oldEntry) {
             if (findError || oldEntry == null) {
               keyGen(dataObject, function(err, value) {
                 tinyUrl.key = value;
@@ -60,7 +60,7 @@ exports.MongoDBDataAccessor = new Class({
     },
 
     fetch: function (keyQuery, callback) {
-        TinyUrl.model.findOne({ key : keyQuery }, function(err, tinyUrl){
+        TinyUrl.findOne({ key : keyQuery }, function(err, tinyUrl){
             if (err != null){
                 callback(err);
             }else{
