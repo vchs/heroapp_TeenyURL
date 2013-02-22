@@ -24,11 +24,17 @@ exports.MongoDBDataAccessor = new Class({
                 tinyUrl.key = value;
                 tinyUrl.created_at = Date.now();
                 tinyUrl.save(function(saveError, newUrl) {
-                  if (saveError == null) {
-                    dataObject.key = tinyUrl.key;
-                    succeed = true;
+                  if (saveError && saveError.code != 11000){
+                    rounds = MAX_ROUNDS;
+                    //raise error immediately
+                    iterationDone(saveError);
+                  } else {
+                    if (saveError == null) {
+                      dataObject.key = tinyUrl.key;
+                      succeed = true;
+                    }
+                    iterationDone(null);
                   }
-                  iterationDone(saveError);
                 });
               });
             }
