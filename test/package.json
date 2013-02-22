@@ -10,7 +10,6 @@
         "should": "1.2.1",
         "expect.js": "0.2.0",
         "sandboxed-module": "0.2.0",
-        "mongodb": "1.1.11",
         "hiredis": "0.1.14",
         "redis": "0.8.2",
         "restler": "2.0.1",
