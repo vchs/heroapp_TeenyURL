@@ -18,13 +18,14 @@ exports.register = function (app) {
         
         console.log("originalUrl is: " + originalUrl);
         console.log("expireAt is: " + expireAt);
+        console.log(Date.parse(expireAt).valueOf());
 
         // check the url
         if(validateUrl(originalUrl)) {
-            var dataAccess = DataAccessorFactory.build;
+//            var dataAccess = DataAccessorFactory.build;
 
             var keyGen = function(dataObject, callback){
-                callback(null, idgen(4));
+                callback(null, idgen(8));
             };
             var newDataObject = {};
             newDataObject.originalUrl = originalUrl;
@@ -33,15 +34,15 @@ exports.register = function (app) {
             /*dataAccess.create(newDataObject, keyGen, function(err, dataObject) {
                if (err != null) {
                    console.log(err);
-                   res.send({"result": "Error", "message": "Server error."});
+                   res.json({"result": "Error", "message": "Server error."});
                } else {
-                   res.send({"result": "OK", "key": dataObject.key});
+                   res.json({"result": "OK", "key": dataObject.key});
                }
             });*/
-            res.send({"result": "OK", "key": {"key":"abc"}.key});
+            res.json({"result": "OK", "key": "abc"});
         }
         else {
-            res.send({"result": "Error", "message": "Invalid URL."});
+            res.json({"result": "Error", "message": "The URL entered is invalid."});
         }
     });
 };
