@@ -36,3 +36,15 @@ VMC_SERVICES='[{"name": "tinyurl-redis-cache", "options": { "host": "YOUR_REDIS_
 ```
 
 Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `RedisCacheProvider` the element with `tinyurl-redis-cache` as `name` should be present.
+
+### Functional Tests for MongoDBDataAccessor
+
+To enable functional tests for `MongoDBDataAccessor`, set environment variable `VMC_SERVICES` to be
+
+```bash
+VMC_SERVICES='[{"name" : "tinyurl-mongodb", "options" : { "url" : "mongodb://localhost/test"}}]' ./test.sh
+```
+
+Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `MongoDBDataAccessor` the element with `tinyurl-mongodb` as `name` should be present.
+
+
