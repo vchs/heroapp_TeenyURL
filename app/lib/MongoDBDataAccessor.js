@@ -7,14 +7,14 @@ mongoose.connect(services.mongoDb.url);
 
 var MAX_ROUNDS = 200;
 
-function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationCallback){
-    TinyUrl.findOne({ originalUrl : dataObject.originalUrl}, null, null, function(findError, oldEntry) {
+function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationCallback) {
+    TinyUrl.findOne({ originalUrl : dataObject.originalUrl }, null, null, function (findError, oldEntry) {
         if (findError || oldEntry == null) {
-            keyGen(dataObject, function(err, value) {
+            keyGen(dataObject, function (err, value) {
                 tinyUrl.key = value;
                 tinyUrl.createdAt = Date.now();
-                tinyUrl.save(function(saveError, newRecord) {
-                    if (saveError && saveError.code != 11000){
+                tinyUrl.save(function (saveError, newRecord) {
+                    if (saveError && saveError.code != 11000) {
                         // if not duplicated_key, raise error immediately
                         state.rounds = MAX_ROUNDS;
                         iterationCallback(saveError);
@@ -32,12 +32,12 @@ function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iteratio
             if (tinyUrl.expireAt != oldEntry.expireAt) {
                 // update expireAt field
                 tinyUrl.key = oldEntry.key;
-                tinyUrl.update({ key: oldEntry.key}, tinyUrl, function(updateError, updatedUrl) {
+                tinyUrl.update({ key: oldEntry.key }, tinyUrl, function (updateError, updatedUrl) {
                     state.rounds = MAX_ROUNDS;
                     state.succeed = (updateError == null);
                     iterationCallback(updateError);
                 });
-            }  else {
+            } else {
                 state.succeed = true;
                 iterationCallback();
             }
@@ -49,16 +49,16 @@ module.exports = new Class({
 
     // implements IDataAccessor
     create: function (dataObject, keyGen, callback) {
-        var state = { rounds : 0, succeed : false};
+        var state = { rounds: 0, succeed: false };
         var tinyUrl = new TinyUrl;
         tinyUrl.importFrom(dataObject);
         async.whilst(
-            function() { return !state.succeed && state.rounds < MAX_ROUNDS },
-            function(iterationDone) {
+            function () { return !state.succeed && state.rounds < MAX_ROUNDS },
+            function (iterationDone) {
             state.rounds ++;
             insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationDone);
         },
-        function(whilstErr) {
+        function (whilstErr) {
             if (state.succeed) {
                 callback(null, dataObject);
             } else {
@@ -73,10 +73,10 @@ module.exports = new Class({
     },
 
     fetch: function (keyQuery, callback) {
-        TinyUrl.findOne({ key : keyQuery }, function(err, tinyUrl){
-            if (err != null){
+        TinyUrl.findOne({ key: keyQuery }, function (err, tinyUrl) {
+            if (err != null) {
                 callback(err);
-            }else{
+            } else {
                 callback(err, tinyUrl.export());
             }
         });

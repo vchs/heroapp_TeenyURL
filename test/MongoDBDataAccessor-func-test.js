@@ -22,7 +22,7 @@ th.when(services.mongoDb)
     it("#create and fetch tinyURL", function (done) {
       var dataObject;
       var expireAtDate = new Date(Date.now() + 1000);
-      var dataObject =  { originalUrl : ORIGINALURL, expireAt : expireAtDate};
+      var dataObject =  { originalUrl : ORIGINALURL, expireAt : expireAtDate };
       mongodbAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult) {
         expect(err).to.be(null);
         expect(createResult.originalUrl).to.eql(ORIGINALURL);
@@ -35,7 +35,7 @@ th.when(services.mongoDb)
           expect(fetchResult).to.have.property('originalUrl');
           expect(fetchResult.originalUrl).to.eql(ORIGINALURL);
           expect(fetchResult.expireAt).to.eql(expireAtDate);
-          var dataObjectTheSame =  {originalUrl : ORIGINALURL};
+          var dataObjectTheSame =  { originalUrl : ORIGINALURL };
           mongodbAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult2) {
             expect(err).to.be(null);
             expect(createResult2.key).to.not.be.empty();

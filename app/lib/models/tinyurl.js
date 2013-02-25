@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 
 var tinyURLSchema = new mongoose.Schema( {
-    key: { type : String, index : { unique: true, required : true }},
-    originalUrl: { type : String, index : { unique: true, required : true}},
+    key: { type: String, index: { unique: true, required: true }},
+    originalUrl: { type: String, index: { unique: true, required: true }},
     createdAt: Date,
     expireAt: Date
     },
-    { id: false,  shardkey : {key: 1} }
+    { id: false,  shardkey: { key: 1 } }
 );
 
 tinyURLSchema.methods.importFrom = function (dataObject) {
@@ -14,7 +14,7 @@ tinyURLSchema.methods.importFrom = function (dataObject) {
     this.expireAt = dataObject.expireAt;
 };
 
-tinyURLSchema.methods.export = function() {
+tinyURLSchema.methods.export = function () {
    var dataObject = this.toObject();
    delete dataObject._id;
    return dataObject;
