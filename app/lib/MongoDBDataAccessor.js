@@ -77,7 +77,7 @@ module.exports = new Class({
             if (err != null || tinyUrl == null) {
                 callback(err);
             } else {
-                callback(err, tinyUrl.export());
+                callback(err, tinyUrl);
             }
         });
         return this;

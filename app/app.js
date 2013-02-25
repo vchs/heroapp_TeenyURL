@@ -1,15 +1,17 @@
 require('mootools');
 
 var express = require('express');
+var path = require('path');
 
 var app = express();
 
 app.configure(function() {
+    app.use(express.favicon(path.join(__dirname, '/public/img/favicon.ico')));
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(require('path').join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function() {

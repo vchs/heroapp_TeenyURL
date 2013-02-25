@@ -1,4 +1,4 @@
-$('#expire_at').datetimepicker();
+$('#expire_at').datetimepicker({minDate: 0});
 
 $(document).ready(function(){
     var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
@@ -7,6 +7,9 @@ $(document).ready(function(){
         $('#alert_success').css("display", "block").text("Copy successfully!");
         $('#alert_success').delay(2 * 1000).fadeOut();
     } );
+
+    $('#tiny_url').text(window.location.href + "KEY").attr("href", window.location.href);
+    $('#copy_button').attr("data-clipboard-text", window.location.href);
 });
 
 $('#url_submit').click(function(){
@@ -17,7 +20,7 @@ $('#url_submit').click(function(){
         },
         function(data, status){
             if(data.result == "OK"){
-                var tinyUrl = "http://localhost:3000/" + data.key;
+                var tinyUrl = window.location.href + data.key;
                 $('#tiny_url').text(tinyUrl).attr("href", tinyUrl);
                 $('#copy_button').attr("data-clipboard-text",tinyUrl);
             }else{
