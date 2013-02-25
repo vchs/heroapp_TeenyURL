@@ -7,7 +7,7 @@ mongoose.connect(services.mongoDb.url);
 
 var MAX_ROUNDS = 200;
 
-var create_with_precheck = function(tinyUrl, dataObject, state, keyGen, iterationCallback){
+var insertOrUpdateWithPrecheck = function(tinyUrl, dataObject, state, keyGen, iterationCallback){
     TinyUrl.findOne({ originalUrl : dataObject.originalUrl}, null, null, function(findError, oldEntry) {
         if (findError || oldEntry == null) {
             keyGen(dataObject, function(err, value) {
@@ -29,8 +29,18 @@ var create_with_precheck = function(tinyUrl, dataObject, state, keyGen, iteratio
             });
         } else {
             dataObject.key = oldEntry.key;
-            state['succeed'] = true;
-            iterationCallback();
+            if (tinyUrl.expireAt != oldEntry.expireAt) {
+                // update expireAt field
+                tinyUrl.key = oldEntry.key;
+                tinyUrl.update({ key: oldEntry.key}, tinyUrl, function(updateError, updatedUrl) {
+                    state['rounds'] = MAX_ROUNDS;
+                    state['succeed'] = (updateError == null);
+                    iterationCallback(updateError);
+                });
+            }  else {
+                state['succeed'] = true;
+                iterationCallback();
+            }
         }
     });
 }
@@ -46,7 +56,7 @@ module.exports = new Class({
             function() { return state['succeed'] != true && state['rounds'] < MAX_ROUNDS },
             function(iterationDone) {
             state['rounds'] = state['rounds'] + 1;
-            create_with_precheck(tinyUrl, dataObject, state, keyGen, iterationDone);
+            insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationDone);
         },
         function(whilstErr) {
             if (state['succeed']) {
