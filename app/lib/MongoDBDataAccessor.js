@@ -74,7 +74,7 @@ module.exports = new Class({
 
     fetch: function (keyQuery, callback) {
         TinyUrl.findOne({ key: keyQuery }, function (err, tinyUrl) {
-            if (err != null) {
+            if (err != null || tinyUrl == null) {
                 callback(err);
             } else {
                 callback(err, tinyUrl.export());
