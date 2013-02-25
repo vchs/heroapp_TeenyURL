@@ -5,6 +5,7 @@ var express = require('express');
 var app = express();
 
 app.configure(function() {
+    app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());

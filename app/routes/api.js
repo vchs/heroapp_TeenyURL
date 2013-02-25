@@ -22,7 +22,7 @@ exports.register = function (app) {
 
         // check the url
         if(validateUrl(originalUrl)) {
-//            var dataAccess = DataAccessorFactory.build;
+            var dataAccess = DataAccessorFactory.build();
 
             var keyGen = function(dataObject, callback){
                 callback(null, idgen(8));
@@ -31,15 +31,14 @@ exports.register = function (app) {
             newDataObject.originalUrl = originalUrl;
             newDataObject.expireAt = expireAt;
 
-            /*dataAccess.create(newDataObject, keyGen, function(err, dataObject) {
+            dataAccess.create(newDataObject, keyGen, function(err, dataObject) {
                if (err != null) {
                    console.log(err);
                    res.json({"result": "Error", "message": "Server error."});
                } else {
                    res.json({"result": "OK", "key": dataObject.key});
                }
-            });*/
-            res.json({"result": "OK", "key": "abc"});
+            });
         }
         else {
             res.json({"result": "Error", "message": "The URL entered is invalid."});

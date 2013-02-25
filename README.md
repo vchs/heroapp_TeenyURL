@@ -5,7 +5,8 @@ How to run app
 --------------
 
 Go to `app` folder, and type `npm install` for the first time,
-and then type `node app` to lunch the server.
+start your mongoDB and redis server,
+and then type `./run.sh` to lunch the server.
 
 How to run test
 ---------------

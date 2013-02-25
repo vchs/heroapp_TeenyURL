@@ -1,4 +1,4 @@
-$('#expire_at').datetimepicker();
+$('#expire_at').datetimepicker({minDate: 0});
 
 $(document).ready(function(){
     var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
@@ -17,7 +17,7 @@ $('#url_submit').click(function(){
         },
         function(data, status){
             if(data.result == "OK"){
-                var tinyUrl = "http://localhost:3000/" + data.key;
+                var tinyUrl = "http://tinyurl.cloudfoundry.com:3000/" + data.key;
                 $('#tiny_url').text(tinyUrl).attr("href", tinyUrl);
                 $('#copy_button').attr("data-clipboard-text",tinyUrl);
             }else{
