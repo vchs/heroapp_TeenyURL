@@ -1,8 +1,8 @@
 module.exports = {
     build: function (){
-        var mongoDataAccessor = new MongoDataAccessor();
+        var mongoDBDataAccessor = new MongoDBDataAccessor();
         var redisCacheProvider = new RedisCacheProvider();
 
-        return new CacheDataAccessor(redisCacheProvider, mongoDataAccessor);
+        return new CacheDataAccessor(redisCacheProvider, mongoDBDataAccessor);
     }
 };

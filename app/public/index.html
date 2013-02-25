@@ -1,10 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="index.css">
-    <script language="javascript" src="jquery.min.js"></script>
+    <title>Tempast TinyUrl</title>
+    <link rel="stylesheet" href="css/index.css" media="screen">
+    <link rel="stylesheet" href="css/jquery-ui-timepicker-addon.css" media="screen">
+    <link rel="stylesheet" href="css/jquery-ui-1.10.1.custom.min.css" media="screen">
+    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
 </head>
 <body>
-    <p>Hello TinyUrl!</p>
+    <div class="container">
+        <div class="nav-header"></div>
+        <div class="content">
+            <div class="container-inner">
+                <h1 class="logo">
+                    TinyURL
+                </h1>
+                <h1 class="pump-up">
+                    Hi, please input your original URL:
+                </h1>
+                <div id="alert_error" class="alert alert-error">
+                </div>
+                <div class="input-area">
+                    <ul class="item-stream unstyled">
+                        <li class="stream-item">
+                            <form class="form-inline url-form" action="" method="post">
+                                <input id="original_url" type="text" class="original-url input-xxlarge" name="originalUrl" placeholder="http://">
+                                <button class="btn btn-large btn-primary" id="url_submit">Tiny</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="input-area">
+                    <input type="checkbox">
+                    The tiny URL will expire at:  <input id="expire_at" type="text" class="expire-at" name="expireAt" value> (optional)
+                </div>
+
+                <h1 class="pump-up">
+                    <a id="tiny_url" href="http://tinyurl.cloudfoundry.com/key">http://tinyurl.cloudfoundry.com/key</a>
+                    <button id="copy_button" class="btn btn-inverse" data-clipboard-text="Copy Me!">Copy</button>
+                </h1>
+                <div id="alert_success" class="alert alert-success">
+                    success
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+<script language="javascript" src="js/jquery.min.js"></script>
+<script language="javascript" src="js/jquery-ui-1.10.1.custom.min.js"></script>
+<script language="javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+<script language="javascript" src="js/bootstrap.min.js"></script>
+<script language="javascript" src="js/ZeroClipboard.min.js"></script>
+<script language="javascript" src="js/index.js"></script>
