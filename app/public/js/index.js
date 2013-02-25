@@ -1,11 +1,13 @@
 $('#expire_at').datetimepicker();
 
-var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
+$(document).ready(function(){
+    var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
 
-clip.on( 'complete', function(client, args) {
-    $('#alert_success').css("display", "block").text("Copy successfully!");
-    $('#alert_success').delay(2 * 1000).fadeOut();
-} );
+    clip.on( 'complete', function(client, args) {
+        $('#alert_success').css("display", "block").text("Copy successfully!");
+        $('#alert_success').delay(2 * 1000).fadeOut();
+    } );
+});
 
 $('#url_submit').click(function(){
     $.post("api/create",

@@ -34,9 +34,9 @@ exports.register = function (app) {
             /*dataAccess.create(newDataObject, keyGen, function(err, dataObject) {
                if (err != null) {
                    console.log(err);
-                   res.send({"result": "Error", "message": "Server error."});
+                   res.json({"result": "Error", "message": "Server error."});
                } else {
-                   res.send({"result": "OK", "key": dataObject.key});
+                   res.json({"result": "OK", "key": dataObject.key});
                }
             });*/
             res.json({"result": "OK", "key": "abc"});
