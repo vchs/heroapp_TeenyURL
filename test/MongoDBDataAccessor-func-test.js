@@ -10,7 +10,8 @@ var keyGen = function generate_key(dataObject, callback){
 
 th.when(services.mongoDb)
 .describe("MongoDBDataAccessor.Functional", function () {
-    var ORIGINALURL = "http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html" + idgen(); 
+    // Use idgen to generate a random url.
+    var ORIGINALURL = "http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html" + idgen();
     var mongodbAccessor;
 
     before(function () {
