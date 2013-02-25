@@ -1,6 +1,6 @@
 module.exports = new Class({
 
-    initialize: function (cacheProvider, dataAccessor){
+    initialize: function (cacheProvider, dataAccessor) {
         this._cacheProvider = cacheProvider;
         this._dataAccessor  = dataAccessor;
     },
@@ -9,10 +9,10 @@ module.exports = new Class({
 
     create: function (dataObject, keyGen, callback) {
         var self = this;
-        this._dataAccessor.create(dataObject, keyGen, function(err, createdDataObject){
-            if (err != null){
+        this._dataAccessor.create(dataObject, keyGen, function (err, createdDataObject) {
+            if (err != null) {
                 callback(err);
-            }else{
+            } else {
                 self._cacheProvider.setValue(createdDataObject.key, createdDataObject.value, createdDataObject.expireAt);
                 callback(err, createdDataObject);
             }
@@ -22,10 +22,10 @@ module.exports = new Class({
 
     fetch: function (key, callback) {
         var self = this;
-        this._cacheProvider.getValue(key, function(err, value){
-            if (value == null){
+        this._cacheProvider.getValue(key, function (err, value) {
+            if (value == null) {
                 self._dataAccessor.fetch(key, callback);
-            }else{
+            } else {
                 var dataObject = {key: key, originalUrl: value};
                 callback(err, dataObject);
             }
