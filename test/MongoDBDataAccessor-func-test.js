@@ -1,4 +1,5 @@
 var expect  = require('expect.js');
+var services = require('../app/lib/ServiceBinding');
 var idgen = require('idgen');
 var services = require('../app/lib/ServiceBinding');
 var th = require('./helpers');

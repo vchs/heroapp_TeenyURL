@@ -10,6 +10,7 @@ exports.register = function (app) {
             if (err != null) {
                 console.log(err);
                 res.send({"result": "Error", "message": "Server error."});
+                // todo redirect to the index page and show error message.
             } else {
                 res.redirect(dataObject.originalUrl);
             }
