@@ -46,9 +46,28 @@ th.when(services.mongoDb)
             expect(createResult2.key).to.not.be.empty();
             expect(createResult2.key).to.eql(createResult.key);
             expect(createResult2.expireAt).to.be(undefined);
-            }, done));
-          }, done, true));
+          }, done));
         }, done, true));
+      }, done, true));
+    });
+
+    it("#return undefined for expired tinyURL", function (done) {
+      // Use idgen to generate a random url.
+      var originalUrl = ORIGINURL_PREFIX + idgen();
+      var expireAtDate = new Date(Date.now() - 1000);
+      var dataObject =  { originalUrl : originalUrl, expireAt : expireAtDate };
+      mongodbAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult) {
+        expect(err).to.be(null);
+        expect(createResult.originalUrl).to.eql(originalUrl);
+        expect(createResult).to.have.property('key');
+        expect(createResult.key).to.not.be.empty();
+        expect(createResult).to.have.property('expireAt');
+        expect(createResult.expireAt).to.eql(expireAtDate);
+        mongodbAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
+          expect(fetchResult).to.be(undefined);
+          expect(err).to.be(null);
+        }, done));
+      }, done, true));
     });
 
 });
