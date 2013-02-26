@@ -39,7 +39,7 @@ th.when(services.redisCache)
                         expect(err).to.be(null);
                         expect(value).to.be(null);
                     }, done));
-                }, 1000);
+                }, 1500);
             }, done, true));
         }, done, true));
     });
