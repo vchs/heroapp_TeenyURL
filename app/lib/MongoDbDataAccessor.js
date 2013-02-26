@@ -8,12 +8,12 @@ mongoose.connect(services.mongoDb.url);
 var MAX_ROUNDS = 200;
 
 function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationCallback) {
-    TinyUrl.findOne({ originalUrl : dataObject.originalUrl }, null, null, function (findError, oldEntry) {
-        if (findError || oldEntry == null) {
+    TinyUrl.findOne({ originalUrl : dataObject.originalUrl }, function (findError, oldEntry) {
+        if (findError || !oldEntry) {
             keyGen(dataObject, function (err, value) {
                 tinyUrl.key = value;
                 tinyUrl.createdAt = Date.now();
-                tinyUrl.save(function (saveError, newRecord) {
+                tinyUrl.save(function (saveError) {
                     if (saveError && saveError.code != 11000) {
                         // if not duplicated_key, raise error immediately
                         state.rounds = MAX_ROUNDS;
