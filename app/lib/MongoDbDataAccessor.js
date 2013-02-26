@@ -31,11 +31,11 @@ function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iteratio
             dataObject.key = oldEntry.key;
             if (tinyUrl.expireAt != oldEntry.expireAt) {
                 // update expireAt field
-                tinyUrl.key = oldEntry.key;
-                tinyUrl.update({ key: oldEntry.key }, tinyUrl, function (updateError, updatedUrl) {
+                oldEntry.expireAt = tinyUrl.expireAt;
+                oldEntry.save(function (err) {
                     state.rounds = MAX_ROUNDS;
-                    state.succeed = (updateError == null);
-                    iterationCallback(updateError);
+                    state.succeed = !err;
+                    iterationCallback(err);
                 });
             } else {
                 state.succeed = true;
@@ -50,7 +50,7 @@ module.exports = new Class({
     // implements IDataAccessor
     create: function (dataObject, keyGen, callback) {
         var state = { rounds: 0, succeed: false };
-        var tinyUrl = new TinyUrl;
+        var tinyUrl = new TinyUrl();
         tinyUrl.importFrom(dataObject);
         async.whilst(
             function () { return !state.succeed && state.rounds < MAX_ROUNDS },

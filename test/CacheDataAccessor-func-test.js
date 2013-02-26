@@ -88,7 +88,7 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
                 expect(retDataObject.key).to.be(key);
                 accessor.fetch(key, th.asyncExpect(function (err, retDataObject) {
                     expect(err).to.be(null);
-                    expect(retDataObject.value).to.be(undefined);
+                    expect(retDataObject).to.be(undefined);
                 }, done));
             }, done, true));
         });

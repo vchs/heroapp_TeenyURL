@@ -13,12 +13,16 @@ $(document).ready(function(){
 });
 
 $('#url_submit').click(function(){
-    $.post("api/create",
-        {
-            originalUrl: $('#original_url').val(),   // js validation
-            expireAt: $('#expire_at').val()
-        },
-        function(data, status){
+    // TODO data validation
+    var dataObject = {
+        originalUrl: $('#original_url').val()
+    };
+    var expireAtStr = $('#expire_at').val().trim();
+    if (expireAtStr) {
+        dataObject.expireAt = new Date(expireAtStr).toISOString();
+    }
+    
+    $.post("api/create", dataObject, function(data, status){
             if(data.result == "OK"){
                 var tinyUrl = window.location.href + data.key;
                 $('#tiny_url').text(tinyUrl).attr("href", tinyUrl);
