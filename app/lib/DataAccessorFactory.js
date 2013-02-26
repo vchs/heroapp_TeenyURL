@@ -1,4 +1,4 @@
-var MongoDbDataAccessor = require('./MongoDBDataAccessor');
+var MongoDbDataAccessor = require('./MongoDbDataAccessor');
 var RedisCacheProvider = require('./RedisCacheProvider');
 var CacheDataAccessor = require('./CacheDataAccessor');
 

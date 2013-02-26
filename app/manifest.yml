@@ -1,0 +1,18 @@
+--- 
+applications: 
+- name: tinyurl
+  framework: node
+  runtime: node06
+  memory: 64M
+  instances: 1
+  url: tinyurl.${target-base}
+  path: .
+  services: 
+    tinyurl-mongodb: 
+      vendor: mongodb
+      version: "2.0"
+      tier: free
+    tinyurl-redis-cache: 
+      vendor: redis
+      version: "2.4"
+      tier: free

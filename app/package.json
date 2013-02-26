@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "express": "3.0.3",
-        "mongoose": "3.0.x",
+        "mongoose": "3.4.0",
         "hiredis": "0.1.14",
         "redis": "0.8.2",
         "mootools": "1.4.5",

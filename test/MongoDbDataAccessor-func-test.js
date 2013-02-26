@@ -13,8 +13,8 @@ th.when(services.mongoDb)
     var mongodbAccessor;
 
     before(function () {
-        var MongoDBDataAccessor = require('../app/lib/MongoDBDataAccessor');
-        mongodbAccessor = new MongoDBDataAccessor();
+        var MongoDbDataAccessor = require('../app/lib/MongoDbDataAccessor');
+        mongodbAccessor = new MongoDbDataAccessor();
     });
 
     it("#return 'undefine' with not-exist key", function (done) {

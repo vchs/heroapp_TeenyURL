@@ -16,10 +16,10 @@ th.when(service.redisCache && service.mongoDb)
     before(function () {
         var CacheDataAccessor = require('../app/lib/CacheDataAccessor');
         var RedisCacheProvider = require('../app/lib/RedisCacheProvider');
-        var MongoDBDataAccessor = require('../app/lib/MongoDBDataAccessor');
+        var MongoDbDataAccessor = require('../app/lib/MongoDbDataAccessor');
         var redisCacheProvider = new RedisCacheProvider();
-        var mongoDBDataAccessor = new MongoDBDataAccessor();
-        accessor = new CacheDataAccessor(redisCacheProvider, mongoDBDataAccessor);
+        var mongoDbDataAccessor = new MongoDbDataAccessor();
+        accessor = new CacheDataAccessor(redisCacheProvider, mongoDbDataAccessor);
     });
 
     describe("#create", function () {
@@ -34,8 +34,7 @@ th.when(service.redisCache && service.mongoDb)
 
     describe("#fetch", function () {
         it("can fetch the original url according to the tiny url", function (done) {
-            var dataObject = {key: GENERATED_KEY};
-            accessor.fetch(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
+            accessor.fetch(GENERATED_KEY, th.asyncExpect(function (err, retDataObject) {
                 expect(err).to.be(null);
                 expect(retDataObject.originalUrl).to.be(LONG_URL);
             }, done));
