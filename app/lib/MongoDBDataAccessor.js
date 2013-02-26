@@ -73,8 +73,8 @@ module.exports = new Class({
     },
 
     fetch: function (keyQuery, callback) {
-        TinyUrl.findOne({ key: keyQuery }, function (err, tinyUrl) {
-            if (err != null || tinyUrl == null) {
+        TinyUrl.findOne({ 'key': keyQuery,  $or: [{ expireAt: undefined }, { expireAt: { $gte: new Date() } }] }, function (err, tinyUrl) {
+            if (err || tinyUrl == null) {
                 callback(err);
             } else {
                 callback(err, tinyUrl);
