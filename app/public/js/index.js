@@ -17,7 +17,7 @@ $('#url_submit').click(function(){
     var dataObject = {
         originalUrl: $('#original_url').val()
     };
-    var expireAtStr = $('#expire_at').val().trim();
+    var expireAtStr = $('#expire_at').val();
     if (expireAtStr) {
         dataObject.expireAt = new Date(expireAtStr).toISOString();
     }
