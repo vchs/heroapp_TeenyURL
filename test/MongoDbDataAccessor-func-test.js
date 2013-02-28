@@ -1,25 +1,25 @@
-var expect  = require('expect.js');
-var idgen = require('idgen');
-var services = require('../app/lib/ServiceBinding');
-var th = require('./helpers');
+var expect = require("expect.js"),
+    idgen = require("idgen"),
+    services = require("../app/lib/ServiceBinding"),
+    th = require("./helpers");
 
 var keyGen = function generate_key(dataObject, callback){
     callback(null, idgen());
 };
 
 th.when(services.mongoDb)
-.describe("MongoDBDataAccessor.Functional", function () {
+  .describe("MongoDbDataAccessor.Functional", function () {
     var ORIGINURL_PREFIX = "http://docs.cloudfoundry.com/";
     var mongodbAccessor;
 
     before(function () {
-        var MongoDbDataAccessor = require('../app/lib/MongoDbDataAccessor');
+        var MongoDbDataAccessor = require("../app/lib/MongoDbDataAccessor");
         mongodbAccessor = new MongoDbDataAccessor();
     });
 
     it("#return 'undefine' with not-exist key", function (done) {
-        mongodbAccessor.fetch('notExistKey', th.asyncExpect(function (err, fetchResult) {
-            expect(fetchResult).to.be(undefined);
+        mongodbAccessor.fetch("noneExistKey", th.asyncExpect(function (err, fetchResult) {
+            expect(fetchResult).to.not.be.ok();
         }, done));
     });
 
@@ -31,17 +31,17 @@ th.when(services.mongoDb)
         var dataObject =  { originalUrl : originalUrl, expireAt : expireAtDate };
         mongodbAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult) {
             expect(err).to.be(null);
-            expect(createResult).to.have.property('key');
+            expect(createResult).to.have.property("key");
             expect(createResult.key).to.not.be.empty();
             mongodbAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
                 expect(err).to.be(null);
-                expect(fetchResult).to.have.property('originalUrl');
+                expect(fetchResult).to.have.property("originalUrl");
                 expect(fetchResult.originalUrl).to.eql(originalUrl);
                 setTimeout(function () {
                     mongodbAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
                     expect(err).to.be(null);
                     // should expire now
-                    expect(fetchResult).to.be(undefined);
+                    expect(fetchResult).to.not.be.ok();
                     var dataObjectNotExpire =  { originalUrl : originalUrl };
                     mongodbAccessor.create(dataObjectNotExpire, keyGen, th.asyncExpect(function (err, createResult2) {
                         // should be able to overwrite the expire Date
@@ -51,7 +51,7 @@ th.when(services.mongoDb)
                         expect(createResult2.key).to.eql(createResult.key);
                         mongodbAccessor.fetch(createResult2.key, th.asyncExpect(function (err, fetchResult) {
                             expect(err).to.be(null);
-                            expect(fetchResult).to.have.property('originalUrl');
+                            expect(fetchResult).to.have.property("originalUrl");
                             expect(fetchResult.originalUrl).to.eql(originalUrl);
                         }, done));
                     }, done, true));
@@ -60,5 +60,4 @@ th.when(services.mongoDb)
             }, done, true));
         }, done, true));
     });
-
 });

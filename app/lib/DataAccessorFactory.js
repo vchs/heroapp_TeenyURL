@@ -1,12 +1,15 @@
-var MongoDbDataAccessor = require('./MongoDbDataAccessor');
-var RedisCacheProvider = require('./RedisCacheProvider');
-var CacheDataAccessor = require('./CacheDataAccessor');
+// This is the factory module to build the full stack for
+// data access layer.
 
-module.exports = {
-    build: function (){
-        var mongoDbDataAccessor = new MongoDbDataAccessor();
-        var redisCacheProvider = new RedisCacheProvider();
+var MongoDbDataAccessor = require("./MongoDbDataAccessor"),
+    RedisCacheProvider  = require("./RedisCacheProvider"),
+    CacheDataAccessor   = require("./CacheDataAccessor");
 
-        return new CacheDataAccessor(redisCacheProvider, mongoDbDataAccessor);
+var dataAccessor;
+
+exports.build = function () {
+    if (!dataAccessor) {
+        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), new MongoDbDataAccessor());
     }
+    return dataAccessor;
 };

@@ -1,3 +1,4 @@
+// Parse the Tempest cloud to get service binding information
 var Services = new Class({
     initialize: function () {
         var services = null;
@@ -7,12 +8,12 @@ var Services = new Class({
         }
         if (Array.isArray(services)) {
             this.services = services;
-            Object.defineProperty(this, 'redisCache', {
-                value: this.findOptions('tinyurl-redis-cache'),
+            Object.defineProperty(this, "redisCache", {
+                value: this.findOptions("tinyurl-redis-cache"),
                 writable: false
             });
-            Object.defineProperty(this, 'mongoDb', {
-                value: this.findOptions('tinyurl-mongodb'),
+            Object.defineProperty(this, "mongoDb", {
+                value: this.findOptions("tinyurl-mongodb"),
                 writable: false
             });
         }

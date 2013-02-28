@@ -1,84 +1,148 @@
-var mongoose = require('mongoose');
-var services = require('./ServiceBinding');
-var async = require('async');
-var TinyUrl = require('./models/TinyUrl');
+// The data accessor implementation backed by MongoDB
 
-mongoose.connect(services.mongoDb.url);
+var async = require("async"),
+    TinyUrl = require("./models/TinyUrl");
 
-var MAX_ROUNDS = 200;
+var MAX_TRIES = 200;
 
-function insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationCallback) {
-    TinyUrl.findOne({ originalUrl : dataObject.originalUrl }, function (findError, oldEntry) {
-        if (findError || !oldEntry) {
-            keyGen(dataObject, function (err, value) {
-                tinyUrl.key = value;
-                tinyUrl.createdAt = Date.now();
-                tinyUrl.save(function (saveError) {
-                    if (saveError && saveError.code != 11000) {
-                        // if not duplicated_key, raise error immediately
-                        state.rounds = MAX_ROUNDS;
-                        iterationCallback(saveError);
-                    } else {
-                        if (saveError == null) {
-                            dataObject.key = tinyUrl.key;
-                            state.succeed = true;
-                        }
-                        iterationCallback();
-                    }
-                });
-            });
-        } else {
-            dataObject.key = oldEntry.key;
-            if (tinyUrl.expireAt != oldEntry.expireAt) {
-                // update expireAt field
-                oldEntry.expireAt = tinyUrl.expireAt;
-                oldEntry.save(function (err) {
-                    state.rounds = MAX_ROUNDS;
-                    state.succeed = !err;
-                    iterationCallback(err);
-                });
-            } else {
-                state.succeed = true;
-                iterationCallback();
-            }
+// Wraps async while loop for retrying jobFn
+// until succeeded, error encountered, or MAX_TRIES reached
+function asyncTry (jobFn, callback) {
+    // create an internal state for jobFn to report
+    // - success done(null, result)
+    // - failure done(err)
+    // - retry   retry()
+    var state = Object.create({
+        retry: function () {
+            this.tries ++;
+            this.iterationDone();
+        },
+        
+        done: function (err, result) {
+            this.completed = true;
+            this.result = result;
+            this.iterationDone(err);
         }
     });
+    
+    // initialize the state
+    state.tries = 0;
+    state.completed = false;
+    
+    // start the while loop
+    async.whilst(
+        function () { return !state.completed && state.tries < MAX_TRIES; },
+        function (iterationDone) {
+            state.iterationDone = iterationDone;
+            try {
+                jobFn(state);
+            } catch (err) {
+                state.done(err);
+            }
+        },
+        function (err) {
+            callback(err, state.result, state.tries >= MAX_TRIES);
+        }
+    );
 }
+
+var connInfo;
+
+function connectMongoDb() {
+    if (!connInfo) {
+        connInfo = require("./ServiceBinding").mongoDb;
+        if (connInfo && connInfo.url) {
+            require("mongoose").connect(connInfo.url);
+        } else {
+            throw new Error("No service binding for MongoDB");
+        }        
+    }
+}
+
+var DUP_KEY_ERROR = 11000;  // the error code from MongoDB for key duplication error
 
 module.exports = new Class({
 
-    // implements IDataAccessor
-    create: function (dataObject, keyGen, callback) {
-        var state = { rounds: 0, succeed: false };
-        var tinyUrl = new TinyUrl();
-        tinyUrl.importFrom(dataObject);
-        async.whilst(
-            function () { return !state.succeed && state.rounds < MAX_ROUNDS },
-            function (iterationDone) {
-            state.rounds ++;
-            insertOrUpdateWithPrecheck(tinyUrl, dataObject, state, keyGen, iterationDone);
-        },
-        function (whilstErr) {
-            if (state.succeed) {
-                callback(null, dataObject);
-            } else {
-                if (whilstErr) {
-                    callback(whilstErr);
+    initialize: function () {
+        connectMongoDb();
+    },
+
+    // implement IDataAccessor
+
+    create: function (dataObject, keyGenFn, callback) {
+        // when original URL already exists, only expiration is updated
+        asyncTry(function (tries) {
+            // first, check if original URL exists
+            TinyUrl.findOne({ originalUrl: dataObject.originalUrl }, function (err, tinyUrl) {
+                if (err) {
+                    tries.done(err);
+                } else if (tinyUrl) {
+                    // original URL exists, update expiration only when necessary
+                    dataObject.key = tinyUrl.key;
+                    if (tinyUrl.expireAt != dataObject.expireAt) {
+                        tinyUrl.expireAt = dataObject.expireAt;
+                        tinyUrl.save(function (err) {
+                            if (err) {
+                                tries.done(err);
+                            } else {
+                                tries.done(null, dataObject);
+                            }
+                        })
+                    } else {
+                        tries.done(null, dataObject);
+                    }
                 } else {
-                    callback(new Error('fail after ' + MAX_ROUNDS + ' times of trial.'));
+                    // add a new mapping, generate key first
+                    keyGenFn(dataObject, function (err, key) {
+                        if (err) {
+                            tries.done(err);
+                        } else {
+                            dataObject.key = key;
+                            TinyUrl.create({
+                                key: key,
+                                originalUrl: dataObject.originalUrl,
+                                expireAt: dataObject.expireAt
+                            }, function (err) {
+                                if (err) {
+                                    if (err.code == DUP_KEY_ERROR) {
+                                        // key duplicated, this is possible if multiple clients
+                                        // are creating the mappings for the same URL, need to retry.
+                                        tries.retry();
+                                    } else {
+                                        // trivil error
+                                        tries.done(err);
+                                    }
+                                } else {
+                                    // mapping created
+                                    tries.done(null, dataObject);
+                                }
+                            });
+                        }
+                    });
                 }
+            });
+        }, function (err, dataObject, givenUp) {
+            if (err) {
+                callback(err);
+            } else if (givenUp) {
+                callback(new Error("Maximum retry limit reached, give up."));
+            } else {
+                callback(null, dataObject);
             }
         });
         return this;
     },
 
-    fetch: function (keyQuery, callback) {
-        TinyUrl.findOne({ 'key': keyQuery,  $or: [{ expireAt: undefined }, { expireAt: { $gte: new Date() } }] }, function (err, tinyUrl) {
-            if (err || tinyUrl == null) {
-                callback(err);
-            } else {
-                callback(err, tinyUrl);
-            }
+    fetch: function (key, callback) {
+        TinyUrl.findOne({
+            key: key,
+            $or: [
+                { expireAt: null },
+                { expireAt: undefined },
+                { expireAt: { $gte: new Date() } }
+            ]
+        }, function (err, tinyUrl) {
+            callback(err, !err && tinyUrl ? tinyUrl.toDataObject() : null);
         });
         return this;
     }

@@ -13,7 +13,6 @@ $(document).ready(function(){
 });
 
 $('#url_submit').click(function(){
-    // TODO data validation
     var dataObject = {
         originalUrl: $('#original_url').val()
     };

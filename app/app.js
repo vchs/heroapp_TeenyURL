@@ -1,3 +1,5 @@
+// This is the main TinyUrl app module
+
 require('mootools');
 
 var express = require('express');
@@ -21,7 +23,10 @@ app.configure('development', function() {
 require('./routes/api').register(app);
 require('./routes/redirect').register(app);
 
+// environment variable VMC_APP_PORT will be defined when the app is
+// running on Tempest cloud. The app must listen on this port otherwise
+// the requests can't be routed.
 var port = process.env.VMC_APP_PORT || 3000;
 app.listen(port, function() {
-    console.log("TinyUrl listening on port " + port);
+    console.log("TinyUrl is listening on port " + port);
 });

@@ -1,23 +1,23 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var tinyURLSchema = new mongoose.Schema( {
-    key: { type: String, index: { unique: true, required: true }},
-    originalUrl: { type: String, index: { unique: true, required: true }},
-    createdAt: Date,
-    expireAt: Date
+        // the key generated uniquely for the original URL: http://tinyurl/key
+        key: { type: String, index: { unique: true, required: true } },
+        // the original URL the key mapped to
+        originalUrl: { type: String, index: { unique: true, required: true } },
+        // when the mapping expires
+        expireAt: Date
     },
-    { id: false,  shardkey: { key: 1 } }
+    { id: false,  shardkey: { key: 1 } }    // "key" is used as "id"
 );
 
-tinyURLSchema.methods.importFrom = function (dataObject) {
-    this.originalUrl = dataObject.originalUrl;
-    this.expireAt = dataObject.expireAt;
+// converting model to data object
+tinyURLSchema.methods.toDataObject = function () {
+    return {
+        key: this.key,
+        originalUrl: this.originalUrl,
+        expireAt: this.expireAt
+    };
 };
 
-tinyURLSchema.methods.export = function () {
-   var dataObject = this.toObject();
-   delete dataObject._id;
-   return dataObject;
-};
-
-module.exports = mongoose.model('TinyUrl', tinyURLSchema, 'tinyurl');
+module.exports = mongoose.model("TinyUrl", tinyURLSchema, "tinyurl");

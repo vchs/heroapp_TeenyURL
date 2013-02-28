@@ -1,9 +1,9 @@
-var service = require('../app/lib/ServiceBinding');
-var expect = require('expect.js');
-var th = require('./helpers');
+var expect = require("expect.js"),
+    service = require("../app/lib/ServiceBinding"),
+    th = require("./helpers");
 
-th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Functional", function () {
-    var accessor;
+th.when(service.redisCache && service.mongoDb)
+  .describe("CacheDataAccessor.Functional", function () {
 
     var VMWARE = "www.vmware.com";
     var GITHUB = "github.com";
@@ -17,18 +17,15 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
         return retFunc;
     };
 
+    var accessor;
+    
     before(function () {
-        var CacheDataAccessor = require('../app/lib/CacheDataAccessor');
-        var RedisCacheProvider = require('../app/lib/RedisCacheProvider');
-        var MongoDbDataAccessor = require('../app/lib/MongoDbDataAccessor');
-        var redisCacheProvider = new RedisCacheProvider();
-        var mongoDbDataAccessor = new MongoDbDataAccessor();
-        accessor = new CacheDataAccessor(redisCacheProvider, mongoDbDataAccessor);
+        accessor = require("../app/lib/DataAccessorFactory").build();
     });
 
     describe("#create", function () {
         it("can create new tiny url", function (done) {
-            var dataObject = {originalUrl: VMWARE};
+            var dataObject = { originalUrl: VMWARE };
             var key = "vmware";
             var keyGenFunc = newKeyGenFunc(key);
             accessor.create(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
@@ -41,7 +38,7 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
             var expireAtDate = new Date(Date.now());
             var key = "github";
             var keyGenFunc = newKeyGenFunc(key);
-            var dataObject = {originalUrl: GITHUB, expireAt: expireAtDate};
+            var dataObject = { originalUrl: GITHUB, expireAt: expireAtDate };
             accessor.create(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
                 expect(err).to.be(null);
                 expect(retDataObject.key).to.be(key);
@@ -53,7 +50,7 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
             var expireAtDate = new Date(Date.now());
             var key = "vmware";
             var keyGenFunc = newKeyGenFunc(key);
-            var dataObject = {originalUrl: VMWARE, expireAt: expireAtDate};
+            var dataObject = { originalUrl: VMWARE, expireAt: expireAtDate };
             accessor.create(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
                 expect(err).to.be(null);
                 expect(retDataObject.key).to.be(key);
@@ -65,7 +62,7 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
     describe("#fetch", function () {
 
         it("can fetch the original url according to the tiny url", function (done) {
-            var dataObject = {originalUrl: GOOGLE};
+            var dataObject = { originalUrl: GOOGLE };
             var key = "google";
             var keyGenFunc = newKeyGenFunc(key);
             accessor.create(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
@@ -79,8 +76,8 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
         });
 
         it("can fetch undefined value for the expired key", function (done) {
-            var expireAtData = new Date(Date.now() - 1000);
-            var dataObject = {originalUrl: GOOGLE, expireAt: expireAtData};
+            var expireAtDate = new Date(Date.now() - 1000);
+            var dataObject = { originalUrl: GOOGLE, expireAt: expireAtDate };
             var key = "google";
             var keyGenFunc = newKeyGenFunc(key);
             accessor.create(dataObject, keyGenFunc, th.asyncExpect(function (err, retDataObject) {
@@ -88,7 +85,7 @@ th.when(service.redisCache && service.mongoDb).describe("CacheDataAccessor.Funct
                 expect(retDataObject.key).to.be(key);
                 accessor.fetch(key, th.asyncExpect(function (err, retDataObject) {
                     expect(err).to.be(null);
-                    expect(retDataObject).to.be(undefined);
+                    expect(retDataObject).to.not.be.ok();
                 }, done));
             }, done, true));
         });

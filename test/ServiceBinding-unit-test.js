@@ -1,5 +1,6 @@
-var sandbox = require('sandboxed-module');
-var expect  = require('expect.js');
+var expect = require("expect.js"),
+    sandbox = require('sandboxed-module');
+
 
 describe("ServiceBinding", function () {
     var REDIS_HOST = "REDIS_HOST", REDIS_PORT = 6379;
@@ -16,7 +17,7 @@ describe("ServiceBinding", function () {
         services = sandbox.require("../app/lib/ServiceBinding", {
             globals: {
                 process: {
-                    env: { 'VMC_SERVICES': VMC_SERVICES }
+                    env: { "VMC_SERVICES": VMC_SERVICES }
                 }
             }
         });

@@ -1,9 +1,13 @@
-var expect = require('expect.js');
-var th = require('./helpers');
-var CacheDataAccessor = require('../app/lib/CacheDataAccessor');
+var expect = require("expect.js"),
+    CacheDataAccessor = require("../app/lib/CacheDataAccessor"),
+    th = require("./helpers");
 
 var ID_KEY = "generated_key";
 var LONG_URL = "www.vmware.com";
+
+var keyGenFunc = function (dataObject, callback) {
+    callback(null, ID_KEY);
+};
 
 var MockDataAccessor = new Class({
     initialize: function () {
@@ -45,11 +49,6 @@ var MockCacheProvider = new Class({
         this.cache[key] = value;
     }
 });
-
-
-var keyGenFunc = function (dataObject, callback) {
-    callback(null, ID_KEY);
-};
 
 describe("CacheDataAccessor", function () {
 

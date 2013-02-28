@@ -6,7 +6,7 @@ How to run app
 
 Go to `app` folder, and type `npm install` for the first time,
 start your mongoDB and redis server,
-and then type `./run.sh` to lunch the server.
+and then type `node app` to launch the server.
 
 How to run test
 ---------------
@@ -48,4 +48,23 @@ VMC_SERVICES='[{"name" : "tinyurl-mongodb", "options" : { "url" : "mongodb://loc
 
 Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `MongoDbDataAccessor` the element with `tinyurl-mongodb` as `name` should be present.
 
+Run app or tests on local box
+-----------------------------
 
+If you installed Redis and MongoDB on local box, you can run app and functional tests locally:
+
+To launch the app:
+
+```bash
+source local-env.sh
+cd app
+node app
+```
+
+To run with all functional tests:
+
+```bash
+source local-env.sh
+cd test
+./test.sh
+```
