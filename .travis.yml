@@ -1,5 +1,2 @@
-before_script:
-  - mongo tinyurl-mongodb --eval 'db.addUser("travis", "test");'
 language: node_js
-services: mongodb
 script: "./test/unittest.sh"
