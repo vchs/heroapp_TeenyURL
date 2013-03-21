@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/vmw-tmpst/heroapp-TeenyURL.png?branch=master)](https://travis-ci.org/vmw-tmpst/heroapp-TeenyURL)
+
 HOW-TO
 ======
 
