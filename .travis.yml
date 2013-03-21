@@ -1,4 +1,4 @@
 before_script:
-  - mongo tinyurl --eval 'db.addUser("travis", "test");'
+  - mongo tinyurl-mongodb --eval 'db.addUser("travis", "test");'
 services: mongodb
 script: "./test/unittest.sh"
