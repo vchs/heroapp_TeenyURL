@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cd ..
 cd app
 npm install
 cd ..
