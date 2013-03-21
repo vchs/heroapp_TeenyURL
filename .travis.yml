@@ -1,1 +1,2 @@
 script: "./test/unittest.sh"
+services: mongodb
