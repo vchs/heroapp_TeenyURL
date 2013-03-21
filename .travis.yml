@@ -1,2 +1,4 @@
-script: "./test/unittest.sh"
+before_script:
+  - mongo mydb_test --eval 'db.addUser("travis", "test");'
 services: mongodb
+script: "./test/unittest.sh"
