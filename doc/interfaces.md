@@ -1,7 +1,7 @@
 ### DataObject
 `DataObject` is the abstract representative of URL data. It is a simple hash, includes
 
-* `key` the key in tiny URL
+* `key` the key in shortened URL
 * `originalUrl` the long URL
 * `expireAt` the timestamp that the mapping will expire, or `null` or `undefined` for never expired
 
@@ -11,7 +11,7 @@ The implementation of this interface must provide the following function:
 ```javascript
 create(dataObject, keyGenFn, callback)
 ```
-This creates a new tiny URL with given long URL.
+This creates a new shortened URL with given long URL.
 
 * `dataObject` 
 
@@ -20,7 +20,7 @@ This creates a new tiny URL with given long URL.
 
 * `keyGenFn` 
 
-    This is a function defined as `function (dataObject, callback)` to create the key in tiny URL for the new mapping.
+    This is a function defined as `function (dataObject, callback)` to create the key in shortened URL for the new mapping.
     Here `dataObject` is passed in from `create`, and `callback` is the form as `function (err, key)`,
     where `key` is the generated key and `err` is absent if succeeded, or `key` is `null` and `err` is the detailed `Error` object if anything wrong.
 
@@ -43,11 +43,11 @@ The return value should be the same `IDataAccessor` instance.
 ```javascript
 fetch(key, callback)
 ```
-This queries a mapping between a tiny URL key and the original URL.
+This queries a mapping between a shortened URL key and the original URL.
 
 * `key`
 
-    This is the key in the tiny URL.
+    This is the key in the shortened URL.
 
 * `callback`
 

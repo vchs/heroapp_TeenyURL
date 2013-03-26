@@ -9,11 +9,11 @@ var Services = new Class({
         if (Array.isArray(services)) {
             this.services = services;
             Object.defineProperty(this, "redisCache", {
-                value: this.findOptions("tinyurl-redis-cache"),
+                value: this.findOptions("teenyurl-redis-cache"),
                 writable: false
             });
             Object.defineProperty(this, "mongoDb", {
-                value: this.findOptions("tinyurl-mongodb"),
+                value: this.findOptions("teenyurl-mongodb"),
                 writable: false
             });
         }

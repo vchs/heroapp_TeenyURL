@@ -36,20 +36,20 @@ Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a c
 To enable functional tests for `RedisCacheProvider`, set environment variable `VMC_SERVICES` to be
 
 ```bash
-VMC_SERVICES='[{"name": "tinyurl-redis-cache", "options": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" }}]' ./test.sh
+VMC_SERVICES='[{"name": "teenyurl-redis-cache", "options": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" }}]' ./test.sh
 ```
 
-Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `RedisCacheProvider` the element with `tinyurl-redis-cache` as `name` should be present.
+Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
 
 ### Functional Tests for MongoDbDataAccessor
 
 To enable functional tests for `MongoDbDataAccessor`, set environment variable `VMC_SERVICES` to be
 
 ```bash
-VMC_SERVICES='[{"name" : "tinyurl-mongodb", "options" : { "url" : "mongodb://localhost/test"}}]' ./test.sh
+VMC_SERVICES='[{"name" : "teenyurl-mongodb", "options" : { "url" : "mongodb://localhost/test"}}]' ./test.sh
 ```
 
-Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `MongoDbDataAccessor` the element with `tinyurl-mongodb` as `name` should be present.
+Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `MongoDbDataAccessor` the element with `teenyurl-mongodb` as `name` should be present.
 
 Run app or tests on local box
 -----------------------------

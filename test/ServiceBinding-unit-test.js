@@ -7,8 +7,8 @@ describe("ServiceBinding", function () {
     var MONGODB_URL = "MONGODB_URL";
     var VMC_SERVICES = JSON.stringify([
         { name: "something", options: {} },
-        { name: "tinyurl-redis-cache", options: { host: REDIS_HOST, port: REDIS_PORT } },
-        { name: "tinyurl-mongodb", options: { url: MONGODB_URL } }
+        { name: "teenyurl-redis-cache", options: { host: REDIS_HOST, port: REDIS_PORT } },
+        { name: "teenyurl-mongodb", options: { url: MONGODB_URL } }
     ]);
     
     var services;

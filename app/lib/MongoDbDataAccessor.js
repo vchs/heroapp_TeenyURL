@@ -1,7 +1,7 @@
 // The data accessor implementation backed by MongoDB
 
 var async = require("async"),
-    TinyUrl = require("./models/TinyUrl");
+    ShortUrl = require("./models/ShortUrl");
 
 var MAX_TRIES = 200;
 
@@ -73,15 +73,15 @@ module.exports = new Class({
         // when original URL already exists, only expiration is updated
         asyncTry(function (tries) {
             // first, check if original URL exists
-            TinyUrl.findOne({ originalUrl: dataObject.originalUrl }, function (err, tinyUrl) {
+            ShortUrl.findOne({ originalUrl: dataObject.originalUrl }, function (err, shortUrl) {
                 if (err) {
                     tries.done(err);
-                } else if (tinyUrl) {
+                } else if (shortUrl) {
                     // original URL exists, update expiration only when necessary
-                    dataObject.key = tinyUrl.key;
-                    if (tinyUrl.expireAt != dataObject.expireAt) {
-                        tinyUrl.expireAt = dataObject.expireAt;
-                        tinyUrl.save(function (err) {
+                    dataObject.key = shortUrl.key;
+                    if (shortUrl.expireAt != dataObject.expireAt) {
+                        shortUrl.expireAt = dataObject.expireAt;
+                        shortUrl.save(function (err) {
                             if (err) {
                                 tries.done(err);
                             } else {
@@ -98,7 +98,7 @@ module.exports = new Class({
                             tries.done(err);
                         } else {
                             dataObject.key = key;
-                            TinyUrl.create({
+                            ShortUrl.create({
                                 key: key,
                                 originalUrl: dataObject.originalUrl,
                                 expireAt: dataObject.expireAt
@@ -134,15 +134,15 @@ module.exports = new Class({
     },
 
     fetch: function (key, callback) {
-        TinyUrl.findOne({
+        ShortUrl.findOne({
             key: key,
             $or: [
                 { expireAt: null },
                 { expireAt: undefined },
                 { expireAt: { $gte: new Date() } }
             ]
-        }, function (err, tinyUrl) {
-            callback(err, !err && tinyUrl ? tinyUrl.toDataObject() : null);
+        }, function (err, shortUrl) {
+            callback(err, !err && shortUrl ? shortUrl.toDataObject() : null);
         });
         return this;
     }
