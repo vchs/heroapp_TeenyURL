@@ -4,15 +4,20 @@ var expect  = require("expect.js"),
 
 describe("MongoDbDataAccessor", function () {
    
-    function createDataAccessor (mockedTinyUrl) {
+    function createDataAccessor (mockedShortUrl) {
         var MongoDbDataAccessor = sandbox.require("../app/lib/MongoDbDataAccessor", {
             requires: {
-                "./models/TinyUrl": {
+                "./models/ShortUrl": {
                     findOne: function () {
-                        return mockedTinyUrl.findOne.apply(mockedTinyUrl, arguments);
+                        return mockedShortUrl.findOne.apply(mockedShortUrl, arguments);
                     },
                     create: function () {
-                        return mockedTinyUrl.create.apply(mockedTinyUrl, arguments);
+                        return mockedShortUrl.create.apply(mockedShortUrl, arguments);
+                    }
+                },
+                "./ServiceBinding": {
+                    mongoDb: {
+                        url: "mongodb://dummy/dummy"
                     }
                 },
                 "mongoose": {
@@ -23,7 +28,7 @@ describe("MongoDbDataAccessor", function () {
         return new MongoDbDataAccessor();
     }
     
-    MockedTinyUrl = new Class({
+    MockedShortUrl = new Class({
         Implements: [th.MockedClass]
     });
 
@@ -42,12 +47,12 @@ describe("MongoDbDataAccessor", function () {
         };
     }
 
-    var tinyUrl;
+    var shortUrl;
     var accessor;
 
     beforeEach(function () {
-        tinyUrl = new MockedTinyUrl();
-        accessor = createDataAccessor(tinyUrl);
+        shortUrl = new MockedShortUrl();
+        accessor = createDataAccessor(shortUrl);
     });
     
     var DUP_KEY_ERROR = 11000;
@@ -59,10 +64,10 @@ describe("MongoDbDataAccessor", function () {
     it("#create a new mapping", function (done) {
         var createdDataObject;
         
-        tinyUrl.mock("findOne", function (query, callback) {
+        shortUrl.mock("findOne", function (query, callback) {
             callback(null, null);
         });
-        tinyUrl.mock("create", function (dataObject, callback) {
+        shortUrl.mock("create", function (dataObject, callback) {
             createdDataObject = dataObject;
             callback(null, dataObject);
         });
@@ -79,7 +84,7 @@ describe("MongoDbDataAccessor", function () {
     });
     
     it("#create a existing mapping", function (done) {
-        tinyUrl.mock("findOne", function (query, callback) {
+        shortUrl.mock("findOne", function (query, callback) {
             var m = Object.create({
                 save: function (callback) {
                     callback(null);
@@ -103,10 +108,10 @@ describe("MongoDbDataAccessor", function () {
     it("#create retry on dup key", function (done) {
         var created = [];
         
-        tinyUrl.mock("findOne", function (query, callback) {
+        shortUrl.mock("findOne", function (query, callback) {
             callback(null, null);
         });
-        tinyUrl.mock("create", function (dataObject, callback) {
+        shortUrl.mock("create", function (dataObject, callback) {
             created.push(dataObject);
             if (dataObject.key == TEST_KEY1) {
                 callback({ code: DUP_KEY_ERROR });

@@ -8,7 +8,7 @@ $(document).ready(function(){
         $('#alert_success').delay(2 * 1000).fadeOut();
     } );
 
-    $('#tiny_url').text(window.location.href + "KEY").attr("href", window.location.href);
+    $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
     $('#copy_button').attr("data-clipboard-text", window.location.href);
 });
 
@@ -23,9 +23,9 @@ $('#url_submit').click(function(){
     
     $.post("api/create", dataObject, function(data, status){
             if(data.result == "OK"){
-                var tinyUrl = window.location.href + data.key;
-                $('#tiny_url').text(tinyUrl).attr("href", tinyUrl);
-                $('#copy_button').attr("data-clipboard-text",tinyUrl);
+                var shortUrl = window.location.href + data.key;
+                $('#short_url').text(shortUrl).attr("href", shortUrl);
+                $('#copy_button').attr("data-clipboard-text", shortUrl);
             }else{
                 $('#alert_error').css("display", "block").text(data.message);
             }

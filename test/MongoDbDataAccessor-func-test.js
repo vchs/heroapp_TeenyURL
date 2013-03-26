@@ -23,7 +23,7 @@ th.when(services.mongoDb)
         }, done));
     });
 
-    it("#create and fetch tinyURL", function (done) {
+    it("#create and fetch short URL", function (done) {
         // Use idgen to generate a random url.
         var originalUrl = ORIGINURL_PREFIX + idgen();
         var EXPIRE_IN = 400; //400ms

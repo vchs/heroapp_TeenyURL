@@ -1,10 +1,10 @@
-// This module routes the access to tiny URL by redirecting to
+// This module routes the access to shortened URL by redirecting to
 // the original URL.
 
 var dataAccessor = require("../lib/DataAccessorFactory").build();
 
 exports.register = function (app) {
-    // The URL accessed will be http(s)://tinyurl(.domain)/key
+    // The URL accessed will be http(s)://teenyurl(.domain)/key
     app.get("/:key", function (req, res) {
         var key = req.params.key;
 
