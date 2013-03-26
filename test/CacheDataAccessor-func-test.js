@@ -24,7 +24,7 @@ th.when(service.redisCache && service.mongoDb)
     });
 
     describe("#create", function () {
-        it("can create new tiny url", function (done) {
+        it("can create new short url", function (done) {
             var dataObject = { originalUrl: VMWARE };
             var key = "vmware";
             var keyGenFunc = newKeyGenFunc(key);
@@ -34,7 +34,7 @@ th.when(service.redisCache && service.mongoDb)
             }, done));
         });
 
-        it("can create new tiny url with expired time", function (done) {
+        it("can create new short url with expired time", function (done) {
             var expireAtDate = new Date(Date.now());
             var key = "github";
             var keyGenFunc = newKeyGenFunc(key);
@@ -46,7 +46,7 @@ th.when(service.redisCache && service.mongoDb)
             }, done));
         });
 
-        it("can update one tiny url expire time", function (done) {
+        it("can update one short url expire time", function (done) {
             var expireAtDate = new Date(Date.now());
             var key = "vmware";
             var keyGenFunc = newKeyGenFunc(key);
@@ -61,7 +61,7 @@ th.when(service.redisCache && service.mongoDb)
 
     describe("#fetch", function () {
 
-        it("can fetch the original url according to the tiny url", function (done) {
+        it("can fetch the original url according to the short url", function (done) {
             var dataObject = { originalUrl: GOOGLE };
             var key = "google";
             var keyGenFunc = newKeyGenFunc(key);

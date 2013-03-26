@@ -1,4 +1,4 @@
-// This is the main TinyUrl app module
+// This is the main TeenyUrl app module
 
 require('mootools');
 
@@ -28,5 +28,5 @@ require('./routes/redirect').register(app);
 // the requests can't be routed.
 var port = process.env.VMC_APP_PORT || 3000;
 app.listen(port, function() {
-    console.log("TinyUrl is listening on port " + port);
+    console.log("TeenyUrl is listening on port " + port);
 });

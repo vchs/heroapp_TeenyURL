@@ -1,5 +1,5 @@
-// This module exposes TinyUrl APIs for creating
-// a new mapping between a tiny URL and an original one.
+// This module exposes TeenyUrl APIs for creating
+// a new mapping between a shortened URL and an original one.
 
 var url = require("url"),
     idgen = require("idgen");
@@ -7,9 +7,9 @@ var url = require("url"),
 // build the data accessing layer here.
 var dataAccess = require("../lib/DataAccessorFactory").build();
 
-/** Tiny URL key generation function
+/** Shortened URL key generation function
  * This function will be invoked by data accessing layer
- * when a new URL key (http://tinyurl/<URL key>) is needed.
+ * when a new URL key (http://teenyurl/<URL key>) is needed.
  * This happens when the mapping to original URL doesn't exist.
  *
  * This function is designed to be invoked asynchronously because

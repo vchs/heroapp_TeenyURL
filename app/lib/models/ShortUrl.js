@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
-var tinyURLSchema = new mongoose.Schema( {
-        // the key generated uniquely for the original URL: http://tinyurl/key
+var shortUrlSchema = new mongoose.Schema( {
+        // the key generated uniquely for the original URL: http://teenyurl/key
         key: { type: String, index: { unique: true, required: true } },
         // the original URL the key mapped to
         originalUrl: { type: String, index: { unique: true, required: true } },
@@ -12,7 +12,7 @@ var tinyURLSchema = new mongoose.Schema( {
 );
 
 // converting model to data object
-tinyURLSchema.methods.toDataObject = function () {
+shortUrlSchema.methods.toDataObject = function () {
     return {
         key: this.key,
         originalUrl: this.originalUrl,
@@ -20,4 +20,4 @@ tinyURLSchema.methods.toDataObject = function () {
     };
 };
 
-module.exports = mongoose.model("TinyUrl", tinyURLSchema, "tinyurl");
+module.exports = mongoose.model("ShortUrl", shortUrlSchema, "shorturl");

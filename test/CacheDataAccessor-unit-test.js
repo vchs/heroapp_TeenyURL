@@ -61,7 +61,7 @@ describe("CacheDataAccessor", function () {
     });
 
     describe("#create", function () {
-        it("can create new tiny url", function (done) {
+        it("can create new short url", function (done) {
             var newDataObject = {originalUrl: LONG_URL};
             var ret = cacheDataAccessor.create(newDataObject, keyGenFunc, th.asyncExpect(function (err, dataObject) {
                 expect(err).to.be(null);
