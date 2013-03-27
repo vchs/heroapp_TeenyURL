@@ -5,6 +5,7 @@ var Services = new Class({
         try {
             services = JSON.parse(process.env.VMC_SERVICES);
         } catch (e) {
+            console.error(e);
         }
         if (Array.isArray(services)) {
             this.services = services;
@@ -12,8 +13,12 @@ var Services = new Class({
                 value: this.findOptions("teenyurl-redis-cache"),
                 writable: false
             });
-            Object.defineProperty(this, "mongoDb", {
-                value: this.findOptions("teenyurl-mongodb"),
+            //Object.defineProperty(this, "mongoDb", {
+            //    value: this.findOptions("teenyurl-mongodb"),
+            //    writable: false
+            //});
+            Object.defineProperty(this, "postgres", {
+                value: this.findOptions("teenyurl-postgres"),
                 writable: false
             });
         }

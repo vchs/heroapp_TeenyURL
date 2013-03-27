@@ -4,11 +4,13 @@ var expect = require("expect.js"),
 
 describe("ServiceBinding", function () {
     var REDIS_HOST = "REDIS_HOST", REDIS_PORT = 6379;
-    var MONGODB_URL = "MONGODB_URL";
+    //var MONGODB_URL = "MONGODB_URL";
+    var POSTGRES_PORT = 5432;
     var VMC_SERVICES = JSON.stringify([
         { name: "something", options: {} },
         { name: "teenyurl-redis-cache", options: { host: REDIS_HOST, port: REDIS_PORT } },
-        { name: "teenyurl-mongodb", options: { url: MONGODB_URL } }
+        { name: "teenyurl-postgres", options: { database: 'teenyurl', port: POSTGRES_PORT } }
+        //{ name: "teenyurl-mongodb", options: { url: MONGODB_URL } }
     ]);
     
     var services;
@@ -29,8 +31,8 @@ describe("ServiceBinding", function () {
         expect(services.redisCache.port).to.eql(REDIS_PORT);
     });
     
-    it("#mongoDb", function () {
-        expect(services.mongoDb).to.be.ok();
-        expect(services.mongoDb.url).to.eql(MONGODB_URL);
+    it("#postgres", function () {
+        expect(services.postgres).to.be.ok();
+        expect(services.postgres.port).to.eql(POSTGRES_PORT);
     });
 });
