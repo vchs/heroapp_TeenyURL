@@ -3,13 +3,21 @@ var expect = require("expect.js"),
 
 
 describe("ServiceBinding", function () {
-    var REDIS_HOST = "REDIS_HOST", REDIS_PORT = 6379;
+    var REDIS_HOST = "REDIS_HOST", REDIS_PORT = 6379, REDIS_PASSWORD = "password";
     var MONGODB_URL = "MONGODB_URL";
-    var VMC_SERVICES = JSON.stringify([
-        { name: "something", options: {} },
-        { name: "teenyurl-redis-cache", options: { host: REDIS_HOST, port: REDIS_PORT } },
-        { name: "teenyurl-mongodb", options: { url: MONGODB_URL } }
-    ]);
+    var VCAP_SERVICES = JSON.stringify({
+        "mongodb-2.0": [
+            { name: "something", credentials: {} },
+            { name: "teenyurl-mongodb", credentials: { url: MONGODB_URL } }
+        ],
+        "redis-2.6": [
+            { name: "redis-2.6", credentials: {} }
+        ],
+        "redis-2.4": [
+            { name: "redis-2.4", credentials: {} },
+            { name: "teenyurl-redis-cache", credentials: { host: REDIS_HOST, port: REDIS_PORT, password: REDIS_PASSWORD } }
+        ]
+    });
     
     var services;
     
@@ -17,7 +25,7 @@ describe("ServiceBinding", function () {
         services = sandbox.require("../app/lib/ServiceBinding", {
             globals: {
                 process: {
-                    env: { "VMC_SERVICES": VMC_SERVICES }
+                    env: { "VCAP_SERVICES": VCAP_SERVICES }
                 }
             }
         });
@@ -27,6 +35,7 @@ describe("ServiceBinding", function () {
         expect(services.redisCache).to.be.ok();
         expect(services.redisCache.host).to.eql(REDIS_HOST);
         expect(services.redisCache.port).to.eql(REDIS_PORT);
+        expect(services.redisCache.password).to.eql(REDIS_PASSWORD);
     });
     
     it("#mongoDb", function () {

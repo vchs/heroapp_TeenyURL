@@ -3,7 +3,7 @@
 #    bash> source local-env.sh
 # before running the app or any functional tests.
 
-export VMC_SERVICES='[
-{"name": "teenyurl-redis-cache", "options": { "host": "localhost", "port": 6379}},
-{"name" : "teenyurl-mongodb", "options" : { "url" : "mongodb://localhost/teenyurl"}}
-]'
+export VCAP_SERVICES='{
+    "redis-2.4": [{"name": "teenyurl-redis-cache", "credentials": { "host": "localhost", "port": 6379 } }],
+    "mongo-2.0": [{"name": "teenyurl-mongodb", "credentials": { "url": "mongodb://localhost/teenyurl"} }]
+}'
