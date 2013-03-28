@@ -7,21 +7,28 @@ describe("MongoDbDataAccessor", function () {
     function createDataAccessor (mockedShortUrl) {
         var MongoDbDataAccessor = sandbox.require("../app/lib/MongoDbDataAccessor", {
             requires: {
-                "./models/ShortUrl": {
-                    findOne: function () {
-                        return mockedShortUrl.findOne.apply(mockedShortUrl, arguments);
-                    },
-                    create: function () {
-                        return mockedShortUrl.create.apply(mockedShortUrl, arguments);
-                    }
-                },
                 "./ServiceBinding": {
                     mongoDb: {
                         url: "mongodb://dummy/dummy"
                     }
                 },
                 "mongoose": {
-                    connect: function () { }
+                    connect: function () { },
+                    model: function () {
+                        return {
+                            findOne: function () {
+                                return mockedShortUrl.findOne.apply(mockedShortUrl, arguments);
+                            },
+                            create: function () {
+                                return mockedShortUrl.create.apply(mockedShortUrl, arguments);
+                            }
+                        }
+                    },
+                    Schema: new Class({
+                        initialize: function () {
+                            this.methods = {};
+                        }
+                    })
                 }
             }
         });

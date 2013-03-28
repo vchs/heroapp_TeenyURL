@@ -12,7 +12,17 @@ Start your redis server
     ./redis-server
 Start your postgresql server and create a database 'teenyurl'.
     We assume your postgresql process is running under account 'postgres'. If not, please use correct role and update the preconfigured 'username' within ./local_env.sh accordingly.
-    createdb -U postgres teenyurl
+
+```bash
+createdb -U postgres teenyurl
+```
+
+Current postgres adapter doesn't support unix socket. It uses TCP right now. This works the same as on Tempest environment.
+For local testing, if you want to use 'postgres' as username without providing password, please edit `pg_hba.conf` and add the following line:
+
+```
+host all postgres 127.0.0.1/32 trust
+```
 
 After redis and postgresql can be connected, type `node app` to launch the server.
 
