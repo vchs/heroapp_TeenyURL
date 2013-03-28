@@ -1,7 +1,30 @@
 // The data accessor implementation backed by MongoDB
 
-var asyncTry = require("./AsyncTryHelper"),
-    ShortUrl = require("./models/ShortUrl");
+var mongoose = require("mongoose"),
+    asyncTry = require("./AsyncTryHelper");
+
+// Define model
+var shortUrlSchema = new mongoose.Schema({
+        // the key generated uniquely for the original URL: http://teenyurl/key
+        key: { type: String, index: { unique: true, required: true } },
+        // the original URL the key mapped to
+        originalUrl: { type: String, index: { unique: true, required: true } },
+        // when the mapping expires
+        expireAt: Date
+    },
+    { id: false,  shardkey: { key: 1 } }    // "key" is used as "id"
+);
+
+// converting model to data object
+shortUrlSchema.methods.toDataObject = function () {
+    return {
+        key: this.key,
+        originalUrl: this.originalUrl,
+        expireAt: this.expireAt
+    };
+};
+
+var ShortUrl = mongoose.model("ShortUrl", shortUrlSchema, "shorturl");
 
 var connInfo;
 
@@ -9,7 +32,7 @@ function connectMongoDb() {
     if (!connInfo) {
         connInfo = require("./ServiceBinding").mongoDb;
         if (connInfo && connInfo.url) {
-            require("mongoose").connect(connInfo.url);
+            mongoose.connect(connInfo.url);
         } else {
             throw new Error("No service binding for MongoDB");
         }        

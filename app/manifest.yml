@@ -8,9 +8,9 @@ applications:
   url: teenyurl.${target-base}
   path: .
   services: 
-    teenyurl-mongodb: 
-      vendor: mongodb
-      version: "2.0"
+    teenyurl-postgres: 
+      vendor: postgresql
+      version: "9.0"
       tier: free
     teenyurl-redis-cache: 
       vendor: redis
