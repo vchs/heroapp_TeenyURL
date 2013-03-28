@@ -4,11 +4,11 @@ var expect = require("expect.js"),
 
 describe("ServiceBinding", function () {
     var REDIS_HOST = "REDIS_HOST", REDIS_PORT = 6379, REDIS_PASSWORD = "password";
-    var MONGODB_URL = "MONGODB_URL";
+    var POSTGRES_PORT = 5432;
     var VCAP_SERVICES = JSON.stringify({
-        "mongodb-2.0": [
+        "postgres-9.1": [
             { name: "something", credentials: {} },
-            { name: "teenyurl-mongodb", credentials: { url: MONGODB_URL } }
+            { name: "teenyurl-postgres", credentials: { database: "teenyurl", port: POSTGRES_PORT } }
         ],
         "redis-2.6": [
             { name: "redis-2.6", credentials: {} }
@@ -38,8 +38,8 @@ describe("ServiceBinding", function () {
         expect(services.redisCache.password).to.eql(REDIS_PASSWORD);
     });
     
-    it("#mongoDb", function () {
-        expect(services.mongoDb).to.be.ok();
-        expect(services.mongoDb.url).to.eql(MONGODB_URL);
+    it("#postgres", function () {
+        expect(services.postgres).to.be.ok();
+        expect(services.postgres.port).to.eql(POSTGRES_PORT);
     });
 });

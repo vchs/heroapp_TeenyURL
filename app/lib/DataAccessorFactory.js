@@ -1,15 +1,18 @@
 // This is the factory module to build the full stack for
 // data access layer.
 
-var MongoDbDataAccessor = require("./MongoDbDataAccessor"),
-    RedisCacheProvider  = require("./RedisCacheProvider"),
-    CacheDataAccessor   = require("./CacheDataAccessor");
+var RedisCacheProvider  = require("./RedisCacheProvider"),
+    PersistentDbWrapper = require("./PersistentDbWrapper"),
+    CacheDataAccessor   = require("./CacheDataAccessor"),
+    duplicationFilter = require("./PostgresDuplicationFilter");
 
 var dataAccessor;
 
 exports.build = function () {
     if (!dataAccessor) {
-        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), new MongoDbDataAccessor());
+        var connInfo = require('./ServiceBinding').postgres;
+        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), 
+                                             new PersistentDbWrapper.DataAccessor(PersistentDbWrapper.buildConn(connInfo, 'postgres'), duplicationFilter));
     }
     return dataAccessor;
 };
