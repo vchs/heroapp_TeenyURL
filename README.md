@@ -7,9 +7,14 @@ HOW-TO
 How to run app
 --------------
 
-Go to `app` folder, and type `npm install` for the first time,
-start your mongoDB and redis server,
-and then type `node app` to launch the server.
+Go to `app` folder, and type `npm install` for the first time, and then get your redis and postgresql server running.
+Start your redis server
+    ./redis-server
+Start your postgresql server and create a database 'teenyurl'.
+    We assume your postgresql process is running under account 'postgres'. If not, please use correct role and update the preconfigured 'username' within ./local_env.sh accordingly.
+    createdb -U postgres teenyurl
+
+After redis and postgresql can be connected, type `node app` to launch the server.
 
 How to run test
 ---------------
@@ -41,20 +46,20 @@ VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "ho
 
 Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
 
-### Functional Tests for MongoDbDataAccessor
+### Functional Tests for PostgreSQL Database Wrapper
 
-To enable functional tests for `MongoDbDataAccessor`, set environment variable `VCAP_SERVICES` to be
+To enable functional tests for `PostgreSQL`, set environment variable `VCAP_SERVICES` to be
 
 ```bash
-VCAP_SERVICES='{ "mongo": [{"name" : "teenyurl-mongodb", "credentials" : { "url" : "mongodb://localhost/test"} }] }' ./test.sh
+VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}] }' ./test.sh
 ```
 
-Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `MongoDbDataAccessor` the element with `teenyurl-mongodb` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `PostgreSQL` the element with `teenyurl-postgres` as `name` should be present.
 
 Run app or tests on local box
 -----------------------------
 
-If you installed Redis and MongoDB on local box, you can run app and functional tests locally:
+With Redis and PostgreSQL running on local box, you can run app and functional tests locally:
 
 To launch the app:
 

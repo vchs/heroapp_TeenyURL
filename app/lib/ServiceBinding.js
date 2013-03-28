@@ -19,8 +19,8 @@ var Services = new Class({
                         writable: false
                     });
                     break;
-                case "teenyurl-mongodb":
-                    Object.defineProperty(this, "mongoDb", {
+                case "teenyurl-postgres":
+                    Object.defineProperty(this, "postgres", {
                         value: service.credentials,
                         writable: false
                     });
