@@ -2,7 +2,7 @@ var asyncTry = require("./AsyncTryHelper");
 
 var ShortUrl;
 
-function initModel(conn) {
+function initModel(conn, additionalMigrationCallback) {
     //No way to pass in unique_index in model, we will set that later.
     ShortUrl = conn.define("ShortUrl", {
         // the key generated uniquely for the original URL: http://teenyurl/key
@@ -24,33 +24,38 @@ function initModel(conn) {
             if (err) {
                 console.error("error during migration" + err);
             } else {
-                //migration successful
-                //HACK?: create unique index via sql directly. Juggingdb's ORM impl doesn't support this right now.
-                conn.adapter.command("CREATE UNIQUE INDEX ShortUrl_key_idx ON \"ShortUrl\" (key);", function(err) {
-                    conn.adapter.command("CREATE UNIQUE INDEX ShortUrl_originalurl_idx ON \"ShortUrl\" (\"originalUrl\");", function(err) {
-                        //42P07 means unique index already exists.
-                        if (err && err.code != "42P07")
-                            console.error("fail to create unique index " + err.code);
-                    });
-                });
+              //migration successful
+              if (additionalMigrationCallback)
+                  additionalMigrationCallback();
             }
         });
     }
 }
 
-var DUP_KEY_ERROR = 23505;  // 23505    UNIQUE VIOLATION    unique_violation
+module.exports = {
+  
+  DataAccessor: new Class({
 
-module.exports = new Class({
-
-    initialize: function (conn) {
-       if (!ShortUrl) {
-            initModel(conn);
-        }        
+    initialize: function (conn, duplication_filter) {
+        this.duplication_filter = duplication_filter;
+        if (!ShortUrl) {
+            initModel(conn, function () {
+                //HACK!: create unique index via sql directly. Juggingdb's ORM impl doesn't support this right now.
+                conn.adapter.command("CREATE UNIQUE INDEX ShortUrl_key_idx ON \"ShortUrl\" (key);", function(err) {
+                    conn.adapter.command("CREATE UNIQUE INDEX ShortUrl_originalurl_idx ON \"ShortUrl\" (\"originalUrl\");", function(err) {
+                    });
+                });
+           });
+        }
     },
 
     // implement IDataAccessor
 
     create: function (dataObject, keyGenFn, callback) {
+        if (dataObject.expireAt && dataObject.expireAt <= new Date()) {
+            dataObject.key = "invalidExpireDate";
+            callback(null, dataObject);
+        }
         // when original URL already exists, only expiration is updated
         asyncTry(function (tries) {
             // first, check if original URL exists
@@ -85,7 +90,7 @@ module.exports = new Class({
                                 expireAt: dataObject.expireAt == undefined ? null : dataObject.expireAt 
                             }, function (err) {
                                 if (err) {
-                                    if (err.code == DUP_KEY_ERROR) {
+                                    if (duplication_filter && duplication_filter(err.code)) {
                                         // unique violation, this is possible if multiple clients
                                         // are creating the mappings for the same URL, need to retry.
                                         tries.retry();
@@ -129,4 +134,12 @@ module.exports = new Class({
         });
         return this;
     }
-});
+  }),
+  buildConn:  function(connInfo, adapterName) {
+        if (connInfo == null)
+            throw new Error("No service binding is configured incorrectly.");
+        var Schema = require("jugglingdb").Schema;
+        return new Schema(adapterName, connInfo);
+  }
+}
+

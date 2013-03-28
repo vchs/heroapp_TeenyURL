@@ -1,6 +1,8 @@
 var expect = require("expect.js"),
     idgen = require("idgen"),
     services = require("../app/lib/ServiceBinding"),
+    PersistentDbWrapper = require("../app/lib/PersistentDbWrapper"),
+    duplicationFilter = require("../app/lib/PostgresDuplicationFilter"),
     th = require("./helpers");
 
 var keyGen = function generate_key(dataObject, callback){
@@ -13,9 +15,9 @@ th.when(services.postgres)
     var postgresAccessor;
 
     before(function () {
-        var PostgresConnBuilder = require("../app/lib/PostgresConnBuilder"),
-            PersistentDataAccessor = require("../app/lib/PersistentDbDataAccessor");
-        postgresAccessor = new PersistentDataAccessor(PostgresConnBuilder());
+        var connInfo = services.postgres;
+        expect(connInfo).to.not.be(null);
+        postgresAccessor = new PersistentDbWrapper.DataAccessor(PersistentDbWrapper.buildConn(connInfo, 'postgres'), duplicationFilter);
     });
 
     it("#return 'undefine' with not-exist key", function (done) {
@@ -36,6 +38,7 @@ th.when(services.postgres)
             expect(createResult.key).to.not.be.empty();
             postgresAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
                 expect(err).to.be(null);
+                expect(fetchResult).to.not.be(null);
                 expect(fetchResult).to.have.property("originalUrl");
                 expect(fetchResult.originalUrl).to.eql(originalUrl);
                 setTimeout(function () {

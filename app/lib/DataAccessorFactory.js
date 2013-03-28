@@ -2,15 +2,17 @@
 // data access layer.
 
 var RedisCacheProvider  = require("./RedisCacheProvider"),
-    PostgresConnBuilder = require("./PostgresConnBuilder"),
-    PersistentDbDataAccessor = require("./PersistentDbDataAccessor"),
-    CacheDataAccessor   = require("./CacheDataAccessor");
+    PersistentDbWrapper = require("./PersistentDbWrapper"),
+    CacheDataAccessor   = require("./CacheDataAccessor"),
+    duplicationFilter = require("./PostgresDuplicationFilter");
 
 var dataAccessor;
 
 exports.build = function () {
     if (!dataAccessor) {
-        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), new PersistentDbDataAccessor(PostgresConnBuilder()));
+        var connInfo = require('./ServiceBinding').postgres;
+        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), 
+                                             new PersistentDbWrapper.DataAccessor(PersistentDbWrapper.buildConn(connInfo, 'postgres'), duplicationFilter));
     }
     return dataAccessor;
 };

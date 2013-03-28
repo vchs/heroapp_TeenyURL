@@ -46,15 +46,15 @@ VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "ho
 
 Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
 
-### Functional Tests for PostgresDataAccessor
+### Functional Tests for PostgreSql Database Wrapper
 
-To enable functional tests for `PostgresDataAccessor`, set environment variable `VCAP_SERVICES` to be
+To enable functional tests for `PostgreSql`, set environment variable `VCAP_SERVICES` to be
 
 ```bash
-VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "options" : { "database" : "teenyurl", "username" : "postgres" }}] }' ./test.sh
+VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}] }' ./test.sh
 ```
 
-Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `PostgresDataAccessor` the element with `teenyurl-postgres` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `PostgreSql` the element with `teenyurl-postgres` as `name` should be present.
 
 Run app or tests on local box
 -----------------------------
