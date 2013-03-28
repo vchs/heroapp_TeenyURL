@@ -8,7 +8,7 @@ describe("ServiceBinding", function () {
     var VCAP_SERVICES = JSON.stringify({
         "postgres-9.1": [
             { name: "something", credentials: {} },
-            { name: "teenyurl-postgres", credentials: { database: 'teenyurl', port: POSTGRES_PORT } }
+            { name: "teenyurl-postgres", credentials: { database: "teenyurl", port: POSTGRES_PORT } }
         ],
         "redis-2.6": [
             { name: "redis-2.6", credentials: {} }

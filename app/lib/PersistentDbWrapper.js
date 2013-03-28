@@ -137,7 +137,7 @@ module.exports = {
   }),
   buildConn:  function(connInfo, adapterName) {
         if (connInfo == null)
-            throw new Error("No service binding is configured incorrectly.");
+            throw new Error("Service binding is configured incorrectly.");
         var Schema = require("jugglingdb").Schema;
         return new Schema(adapterName, connInfo);
   }
