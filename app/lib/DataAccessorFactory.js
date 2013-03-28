@@ -2,14 +2,15 @@
 // data access layer.
 
 var RedisCacheProvider  = require("./RedisCacheProvider"),
-    PostgresDataAccessor = require("./PostgresDataAccessor"),
+    PostgresConnBuilder = require("./PostgresConnBuilder"),
+    PersistentDbDataAccessor = require("./PersistentDbDataAccessor"),
     CacheDataAccessor   = require("./CacheDataAccessor");
 
 var dataAccessor;
 
 exports.build = function () {
     if (!dataAccessor) {
-        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), new PostgresDataAccessor());
+        dataAccessor = new CacheDataAccessor(new RedisCacheProvider(), new PersistentDbDataAccessor(PostgresConnBuilder()));
     }
     return dataAccessor;
 };

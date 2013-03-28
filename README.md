@@ -12,8 +12,7 @@ Start your redis server
     ./redis-server
 Start your postgresql server and create a database 'teenyurl'.
     We assume your postgresql process is running under account 'postgres'. If not, please use correct role and update the preconfigured 'username' within ./local_env.sh accordingly.
-    psql postgres -c 'CREATE EXTENSION "adminpack";' 
-    psql postgres -c 'CREATE DATABASE "teenyurl";' 
+    createdb -U postgres teenyurl
 
 After redis and postgresql can be connected, type `node app` to launch the server.
 
@@ -52,15 +51,15 @@ Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests 
 To enable functional tests for `PostgresDataAccessor`, set environment variable `VCAP_SERVICES` to be
 
 ```bash
-VCAP_SERVICES='[{"name" : "teenyurl-postgres", "options" : { "database" : "teenyurl", "username" : "postgres" }}]' ./test.sh
+VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "options" : { "database" : "teenyurl", "username" : "postgres" }}] }' ./test.sh
 ```
 
-Please be noted: `VCAP_SERVICES` is an array in JSON, to enable functional tests for `PostgresDataAccessor` the element with `teenyurl-postgres` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `PostgresDataAccessor` the element with `teenyurl-postgres` as `name` should be present.
 
 Run app or tests on local box
 -----------------------------
 
-If you installed Redis and MongoDB on local box, you can run app and functional tests locally:
+With Redis and PostgreSql running on local box, you can run app and functional tests locally:
 
 To launch the app:
 

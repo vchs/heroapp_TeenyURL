@@ -13,8 +13,9 @@ th.when(services.postgres)
     var postgresAccessor;
 
     before(function () {
-        var PostgresDataAccessor = require("../app/lib/PostgresDataAccessor");
-        postgresAccessor = new PostgresDataAccessor();
+        var PostgresConnBuilder = require("../app/lib/PostgresConnBuilder"),
+            PersistentDataAccessor = require("../app/lib/PersistentDbDataAccessor");
+        postgresAccessor = new PersistentDataAccessor(PostgresConnBuilder());
     });
 
     it("#return 'undefine' with not-exist key", function (done) {
@@ -39,7 +40,7 @@ th.when(services.postgres)
                 expect(fetchResult.originalUrl).to.eql(originalUrl);
                 setTimeout(function () {
                     postgresAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
-                    expect(err).to.not.be(null);
+                    expect(err).to.be(null);
                     // should expire now
                     expect(fetchResult).to.not.be.ok();
                     var dataObjectNotExpire =  { originalUrl : originalUrl };
