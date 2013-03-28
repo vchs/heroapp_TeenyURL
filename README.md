@@ -39,23 +39,23 @@ Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a c
 
 ### Functional Tests for RedisCacheProvider
 
-To enable functional tests for `RedisCacheProvider`, set environment variable `VMC_SERVICES` to be
+To enable functional tests for `RedisCacheProvider`, set environment variable `VCAP_SERVICES` to be
 
 ```bash
-VMC_SERVICES='[{"name": "teenyurl-redis-cache", "options": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" }}]' ./test.sh
+VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" } }] }' ./test.sh
 ```
 
-Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
 
 ### Functional Tests for PostgresDataAccessor
 
-To enable functional tests for `PostgresDataAccessor`, set environment variable `VMC_SERVICES` to be
+To enable functional tests for `PostgresDataAccessor`, set environment variable `VCAP_SERVICES` to be
 
 ```bash
-VMC_SERVICES='[{"name" : "teenyurl-postgres", "options" : { "database" : "teenyurl", "username" : "postgres" }}]' ./test.sh
+VCAP_SERVICES='[{"name" : "teenyurl-postgres", "options" : { "database" : "teenyurl", "username" : "postgres" }}]' ./test.sh
 ```
 
-Please be noted: `VMC_SERVICES` is an array in JSON, to enable functional tests for `PostgresDataAccessor` the element with `teenyurl-postgres` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an array in JSON, to enable functional tests for `PostgresDataAccessor` the element with `teenyurl-postgres` as `name` should be present.
 
 Run app or tests on local box
 -----------------------------
