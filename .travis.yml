@@ -4,3 +4,5 @@ language: node_js
 script: "./build_ci.sh"
 services:
   - redis-server
+env:
+  - VCAP_SERVICES='{"postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}]}'
