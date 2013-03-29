@@ -1,5 +1,3 @@
-before_script:
-  - psql -c 'create database teenyurl;' -U postgres
 language: node_js
 script: "./build_ci.sh"
 services:
