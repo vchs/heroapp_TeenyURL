@@ -1,4 +1,6 @@
 language: node_js
+before_script:
+  - psql -c 'create database teenyurl;' -U postgres
 script: "./build_ci.sh"
 services:
-  - mongodb
+  - redis-server
