@@ -1,3 +1,5 @@
+env:
+  - VCAP_SERVICES={ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "localhost", "port": 6379, "password": "" } }], "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}] }
 before_script:
   - psql -c 'create database teenyurl;' -U postgres
 language: node_js
