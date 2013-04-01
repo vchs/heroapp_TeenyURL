@@ -10,11 +10,11 @@ echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   start unit tests and integration tests
 TEST_FILES="$@"
 [ -z "$TEST_FILES" ] && TEST_FILES="$(find . -name '*-test.js')"
 ./node_modules/.bin/mocha --reporter list -r mootools $TEST_FILES
-cd ..
-cd ui-automation
-npm install
-echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   start UI automation tests   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-TEST_FILES="$@"
-[ -z "$TEST_FILES" ] && TEST_FILES="$(find . -name 'ui-test.js')"
-./node_modules/.bin/mocha --timeout 80000 --reporter list -r mootools $TEST_FILES
+#cd ..
+#cd ui-automation
+#npm install
+#echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   start UI automation tests   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+#TEST_FILES="$@"
+#[ -z "$TEST_FILES" ] && TEST_FILES="$(find . -name 'ui-test.js')"
+#./node_modules/.bin/mocha --timeout 80000 --reporter list -r mootools $TEST_FILES
 
