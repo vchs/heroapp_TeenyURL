@@ -7,10 +7,14 @@ cd test
 npm install
 export VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}], "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "localhost", "port": 6379, "password": "" } }]}'
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   start unit tests and integration tests   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-./test.sh
+TEST_FILES="$@"
+[ -z "$TEST_FILES" ] && TEST_FILES="$(find . -name '*-test.js')"
+./node_modules/.bin/mocha --reporter list -r mootools $TEST_FILES
 cd ..
 cd ui-automation
 npm install
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   start UI automation tests   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-./test.sh
+TEST_FILES="$@"
+[ -z "$TEST_FILES" ] && TEST_FILES="$(find . -name 'ui-test.js')"
+./node_modules/.bin/mocha --timeout 80000 --reporter list -r mootools $TEST_FILES
 
