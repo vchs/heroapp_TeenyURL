@@ -2,7 +2,7 @@ var expect = require("expect.js"),
     service = require("../app/lib/ServiceBinding"),
     th = require("./helpers");
 
-th.when(service.redisCache && service.mongoDb)
+th.when(service.redisCache && service.postgres)
   .describe("CacheDataAccessor.Functional", function () {
 
     var VMWARE = "www.vmware.com";
