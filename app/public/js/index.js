@@ -33,6 +33,7 @@ $('#url_submit').click(function(){
                 $('#alert_error').css("display", "none");
             }else{
                 $('#alert_error').css("display", "block").text(data.message);
+                $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
             }
         }
     );

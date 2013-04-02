@@ -74,33 +74,38 @@ module.exports = {
                             tries.done(null, dataObject);
                         }
                     } else {
-                        // add a new mapping, generate key first
-                        keyGenFn(dataObject, function (err, key) {
-                            if (err) {
-                                tries.done(err);
-                            } else {
-                                dataObject.key = key
-                                ShortUrl.create({
-                                    key: key,
-                                    originalUrl: dataObject.originalUrl,
-                                    expireAt: dataObject.expireAt == undefined ? null : dataObject.expireAt 
-                                }, function (err) {
-                                    if (err) {
-                                        if (duplication_filter && duplication_filter(err.code)) {
-                                            // unique violation, this is possible if multiple clients
-                                            // are creating the mappings for the same URL, need to retry.
-                                            tries.retry();
+                        if (dataObject.expireAt < new Date()) {
+                            //Don't generate, just return.
+                            tries.done(null, dataObject);
+                        } else {
+                            // add a new mapping, generate key first
+                            keyGenFn(dataObject, function (err, key) {
+                                if (err) {
+                                    tries.done(err);
+                                } else {
+                                    dataObject.key = key
+                                    ShortUrl.create({
+                                        key: key,
+                                        originalUrl: dataObject.originalUrl,
+                                        expireAt: dataObject.expireAt == undefined ? null : dataObject.expireAt 
+                                    }, function (err) {
+                                        if (err) {
+                                            if (duplication_filter && duplication_filter(err.code)) {
+                                                // unique violation, this is possible if multiple clients
+                                                // are creating the mappings for the same URL, need to retry.
+                                                tries.retry();
+                                            } else {
+                                                //Don't try
+                                                tries.done(err);
+                                            }
                                         } else {
-                                            //Don't try
-                                            tries.done(err);
+                                            // mapping created
+                                            tries.done(null, dataObject);
                                         }
-                                    } else {
-                                        // mapping created
-                                        tries.done(null, dataObject);
-                                    }
-                                });
-                            }
-                        });
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
             }, function (err, dataObject, givenUp) {
