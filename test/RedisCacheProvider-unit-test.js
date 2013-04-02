@@ -82,7 +82,7 @@ describe("RedisCacheProvider", function () {
         var expireAt = new Date(Date.now() + 10000);
         var ret = provider.setValue("key", null, expireAt, th.asyncExpect(function (err, key, expiration) {
             expect(err).to.be(null);
-            expect(key).to.eql("key1");
+            expect(key).to.eql("key");
             expect(expiration).to.eql(Math.floor(expireAt.valueOf() / 1000));
         }, done));
         expect(ret).to.be(provider);
