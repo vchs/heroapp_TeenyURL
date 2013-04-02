@@ -30,6 +30,7 @@ $('#url_submit').click(function(){
                 var shortUrl = window.location.href + data.key;
                 $('#short_url').text(shortUrl).attr("href", shortUrl);
                 $('#copy_button').attr("data-clipboard-text", shortUrl);
+                $('#alert_error').css("display", "none");
             }else{
                 $('#alert_error').css("display", "block").text(data.message);
             }
