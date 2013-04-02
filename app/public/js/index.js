@@ -1,15 +1,19 @@
 $('#expire_at').datetimepicker({minDate: 0});
 
 $(document).ready(function(){
-    var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
-
-    clip.on( 'complete', function(client, args) {
-        $('#alert_success').css("display", "block").text("Copy successfully!");
-        $('#alert_success').delay(2 * 1000).fadeOut();
-    } );
-
     $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
-    $('#copy_button').attr("data-clipboard-text", window.location.href);
+
+    var flashVersion = swfobject.getFlashPlayerVersion();
+    if (flashVersion.major >= 10) {
+        var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
+        clip.on( 'complete', function(client, args) {
+            $('#alert_success').css("display", "block").text("Copy successfully!");
+            $('#alert_success').delay(2 * 1000).fadeOut();
+        } );
+        $('#copy_button').attr("data-clipboard-text", window.location.href);
+     } else {
+        $('#copy_button').css("display", "none");
+     }
 });
 
 $('#url_submit').click(function(){
