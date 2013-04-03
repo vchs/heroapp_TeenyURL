@@ -18,12 +18,15 @@ describe("Teeny URL UI automation - ", function() {
         assert.ok(browser.text(':contains("The shortened URL will expire at")'));
         assert.ok(browser.text(':contains("Shorten")'));
         assert.ok(browser.query("#copy_button"));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
       })
       .then(done, done);
   });
 
   it("add new url without expiration time", function(done) {
     var lastStep = false;
+    var alternativeURL;
     browser = new Browser();
     browser
       .visit(site)
@@ -32,7 +35,8 @@ describe("Teeny URL UI automation - ", function() {
         return browser.pressButton("#url_submit");
       })
       .then(function() { //click google alternative url
-        assert.equal(browser.text("#short_url"), browser.query("#short_url").childNodes[0]._nodeValue);
+        alternativeURL = browser.text("#short_url");
+        assert.equal(alternativeURL, browser.query("#short_url")._attributes.href._nodeValue);
         console.log("alternative url: " + browser.query("#short_url").childNodes[0]._nodeValue);
         return browser.clickLink("#short_url");
       })
@@ -48,8 +52,10 @@ describe("Teeny URL UI automation - ", function() {
       })
       .then(function() {
         lastStep = true;
-        console.log(browser.query("#short_url").childNodes[0]._nodeValue);
-        return browser.clickLink("#short_url");
+        assert.ok(browser.text(':contains("URL is expired successfully.")'));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
+        return browser.visit(alternativeURL);
       })
       .then(function() {
         assert.equal(true, false);
@@ -114,21 +120,16 @@ describe("Teeny URL UI automation - ", function() {
         return browser.pressButton("#url_submit");
       })
       .then(function() {
-        return browser.clickLink("#short_url");
-      })
-      .then(function() {
-        assert.equal(true, false);
-      })
-      .fail(function(error) {
-        console.log("debug msg: " + error);
-        assert.equal(browser.statusCode, 404);
-        assert.equal(error, "Error: Server returned status code 404");
+        assert.ok(browser.text(':contains("URL is expired successfully.")'));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
       })
       .then(done, done);
   });
 
   it("add existing url without expiration time", function(done) {
     var lastStep = false;
+    var alternativeURL;
     browser = new Browser();
     browser
       .visit(site)
@@ -137,6 +138,9 @@ describe("Teeny URL UI automation - ", function() {
         return browser.pressButton("#url_submit");
       })
       .then(function() {
+        alternativeURL = browser.text("#short_url");
+        assert.equal(alternativeURL, browser.query("#short_url")._attributes.href._nodeValue);
+        console.log("alternative url: " + alternativeURL);
         return browser.clickLink("#short_url");
       })
       .then(function() { //check google homepage is opened, then go back to previous page
@@ -162,8 +166,10 @@ describe("Teeny URL UI automation - ", function() {
       })
       .then(function() {
         lastStep = true;
-        console.log(browser.query("#short_url").childNodes[0]._nodeValue);
-        return browser.clickLink("#short_url");
+        assert.ok(browser.text(':contains("URL is expired successfully.")'));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
+        return browser.visit(alternativeURL);
       })
       .then(function() {
         assert.equal(true, false);
@@ -232,6 +238,7 @@ describe("Teeny URL UI automation - ", function() {
 
   it("add existing url with past expiration time", function(done) {
     var lastStep = false;
+    var alternativeURL;
     browser = new Browser();
     browser
       .visit(site)
@@ -240,6 +247,7 @@ describe("Teeny URL UI automation - ", function() {
         return browser.pressButton("#url_submit");
       })
       .then(function() {
+        alternativeURL = browser.text("#short_url");
         return browser.clickLink("#short_url");
       })
       .then(function() { //check google homepage is opened, then go back to previous page
@@ -253,8 +261,10 @@ describe("Teeny URL UI automation - ", function() {
       })
       .then(function() {
         lastStep = true;
-        console.log(browser.query("#short_url").childNodes[0]._nodeValue);
-        return browser.clickLink("#short_url");
+        assert.ok(browser.text(':contains("URL is expired successfully.")'));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
+        return browser.visit(alternativeURL);
       })
       .then(function() {
         assert.equal(true, false);
@@ -276,10 +286,22 @@ describe("Teeny URL UI automation - ", function() {
         return browser.pressButton("#url_submit");
       })
       .then(function() {
-        assert.ok(browser.text(':contains("The URL entered is invalid.")'));
+        assert.equal(browser.text("#alert_error"), "The URL entered is invalid.");
+        browser.fill("originalUrl", urlGoogle);
+        return browser.pressButton("#url_submit");
+      })
+      .then(function() {
+        assert.equal(browser.query("#alert_error")._cssStyleDeclaration._values.display, "none");
+      })
+      .then(function() { //delete url
+        browser.fill("#expire_at", expiredDate);
+        return browser.pressButton("#url_submit");
+      })
+      .then(function() {
+        assert.ok(browser.text(':contains("URL is expired successfully.")'));
+        assert.equal(site + "/KEY", browser.text("#short_url"));
+        assert.equal(site + "/", browser.query("#short_url")._attributes.href._nodeValue);
       })
       .then(done, done);
   });
-
-
 });
