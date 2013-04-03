@@ -85,7 +85,7 @@ exports.register = function (app) {
         
         if (!validateUrl(originalUrl)) {
             respondError(res, "The URL entered is invalid.");
-        } else if (expireAt && (!validateDate(expireAt) || expireAt < new Date())) {
+        } else if (expireAt && !validateDate(expireAt)) {
             respondError(res, "The expiration date is invalid.");
         } else {
             // construct a data object

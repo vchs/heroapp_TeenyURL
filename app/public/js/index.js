@@ -27,12 +27,18 @@ $('#url_submit').click(function(){
     
     $.post("api/create", dataObject, function(data, status){
             if(data.result == "OK"){
-                var shortUrl = window.location.href + data.key;
-                $('#short_url').text(shortUrl).attr("href", shortUrl);
-                $('#copy_button').attr("data-clipboard-text", shortUrl);
-                $('#alert_error').css("display", "none");
+                if (expireAtStr && new Date(expireAtStr) < new Date()) {
+                    $('#alert_error').css({'display': 'block', 'color': 'green'}).text("URL is expired successfully.");
+                    $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
+                } else {
+                    var shortUrl = window.location.href + data.key;
+                    $('#short_url').text(shortUrl).attr("href", shortUrl);
+                    $('#copy_button').attr("data-clipboard-text", shortUrl);
+                    $('#alert_error').css("display", "none");
+                }
             }else{
-                $('#alert_error').css("display", "block").text(data.message);
+                $('#alert_error').css({'display': 'block', 'color': 'red'}).text(data.message);
+                $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
             }
         }
     );
