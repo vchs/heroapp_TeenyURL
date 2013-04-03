@@ -101,12 +101,7 @@ exports.register = function (app) {
                     console.error(err);
                     respondError(res, "Server error.");
                 } else {
-                    if (expireAt && expireAt < new Date()) {
-                        respondError(res, "URL is expired.");
-                    } else {
-                        respondOk(res, dataObject);
-                    }
-
+                    respondOk(res, dataObject);
                 }
             })
         }
