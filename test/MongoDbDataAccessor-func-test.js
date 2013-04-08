@@ -12,9 +12,10 @@ th.when(services.mongoDb)
     var ORIGINURL_PREFIX = "http://docs.cloudfoundry.com/";
     var mongodbAccessor;
 
-    before(function () {
+    before(function (done) {
         var MongoDbDataAccessor = require("../app/lib/MongoDbDataAccessor");
-        mongodbAccessor = new MongoDbDataAccessor();
+        mongodbAccessor = new MongoDbDataAccessor(services.mongoDb);
+        mongodbAccessor.ready(done);
     });
 
     it("#return 'undefine' with not-exist key", function (done) {

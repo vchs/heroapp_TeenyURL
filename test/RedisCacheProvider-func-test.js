@@ -11,7 +11,7 @@ th.when(services.redisCache)
     
     before(function () {
         var RedisCacheProvider = require("../app/lib/RedisCacheProvider");
-        provider = new RedisCacheProvider();
+        provider = new RedisCacheProvider(services.redisCache);
     });
     
     beforeEach(function (done) {
