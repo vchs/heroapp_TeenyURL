@@ -8,27 +8,13 @@ function logError(err) {
     }
 }
 
-function connectRedis(callback) {
-    // make a dummy callback if not provided
-    if (!callback) {
-        callback = function () { };
-    }
-
-    var connInfo = require("./ServiceBinding").redisCache;
-    if (!connInfo) {
-        throw new Error("No service binding for Redis cache.");
-    }
-
+function connectRedis(connInfo) {
     var client = redis.createClient(connInfo.port, connInfo.host);
     client.on("error", function (err) {
         logError(err);
-        callback(err, client);
     }).on("ready", function () {
         // disable persistency as Redis is only used for caching
-        client.config("set", "save", "", function () {
-            // ignore the error disabling persistency
-            callback(null, client);
-        });
+        client.config("set", "save", "");
     });
 
     if (connInfo.password) {
@@ -39,8 +25,8 @@ function connectRedis(callback) {
 
 module.exports = new Class({
 
-    initialize: function (callback) {
-        this.client = connectRedis(callback);
+    initialize: function (connInfo) {
+        this.client = connectRedis(connInfo);
     },
     
     // implement ICacheProvider
