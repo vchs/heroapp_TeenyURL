@@ -12,25 +12,21 @@ var Services = new Class({
         } catch (e) {
         }
         services.forEach(function (service) {
-            switch (service.name) {
-                case "teenyurl-redis-cache":
+            if (/teenyurl-redis-cache/.exec(service.name)) {
                     Object.defineProperty(this, "redisCache", {
                         value: service.credentials,
                         writable: false
                     });
-                    break;
-                case "teenyurl-mongodb":
+            } else if (/teenyurl-mongodb/.exec(service.name)) {
                     Object.defineProperty(this, "mongoDb", {
                         value: service.credentials,
                         writable: false
                     });
-                    break;
-                case "teenyurl-postgres":
+            } else if (/teenyurl-postgres/.exec(service.name)) {
                     Object.defineProperty(this, "postgres", {
                         value: service.credentials,
                         writable: false
                     });
-                    break;
             }
         }, this);
     }

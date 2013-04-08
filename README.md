@@ -1,14 +1,24 @@
 [![Build Status](https://travis-ci.org/vmw-tmpst/heroapp-TeenyURL.png?branch=master)](https://travis-ci.org/vmw-tmpst/heroapp-TeenyURL)
 
-HOW-TO
-======
-
-
-How to run app
+#Introduction
 --------------
 
-Go to `app` folder, and type `npm install` for the first time, and then get your redis and postgresql server running.
-Start your redis server
+Teenyurl is written with nodejs and express framework. It can runs either on Platform such as VMware Tempest or Cloud Foundry, or in your local box. It uses PostgreSql to store persistent data, and Redis as cache (optional). The backend logic is well-designed so you can easily switch to other database service such as mongodb, mysql etc.
+
+#Run app on Tempest or Cloud Foundry
+--------------
+'App' Folder contains code for the web app. File 'manifest.yml' in this folder already contains the info needed so you can directly push the app to Tempest/Cloud Foundry.
+
+You can always customize the manifest such as binding services with different names for the production and the staging. When changing service names, make sure new names still contain the earlier prefix. Our code relies on these perfixes to bind the service. For example, for PostgreSql service, it should be prefixed with 'teenyurl-postgres', for redis, the prefix is 'teenyurl-redis-cache'.
+
+
+#Run app in your local box
+--------------
+
+##Backend Service Setup
+--------------
+
+Start redis server
     ./redis-server
 Start your postgresql server and create a database 'teenyurl'.
     We assume your postgresql process is running under account 'postgres'. If not, please use correct role and update the preconfigured 'username' within ./local_env.sh accordingly.
@@ -24,14 +34,44 @@ For local testing, if you want to use 'postgres' as username without providing p
 host all postgres 127.0.0.1/32 trust
 ```
 
-After redis and postgresql can be connected, type `node app` to launch the server.
+##Environment setup for the app or test
 
-How to run test
+To use services such as redis/postgresql, an environment variable VCAP_SERVICES need be set before starting the app or running the functional test. You can either set the environment variable via the script we provide, or specify it the time running the app or test.
+
+```bash
+source local-env.sh
+```
+
+
+```bash
+VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" } }] , "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}] }' COMMAND
+```
+
+Please be noted: `VCAP_SERVICES` is an hash in JSON format. One item within the hash specifies one service.
+
+##How to run app
+After setting environment variables, go to `app` folder, and type `npm install` for the first time
+
+Launch the web app.
+
+```bash
+cd app
+env | grep VCAP_SERVICE
+node app
+```
+
+##How to run test
 ---------------
 
-Go to `test` folder, and type `npm install` for the first time,
-and then type `./test.sh` to run all the tests.
-Any test should be written in the file after the name pattern `*-test.js`.
+Go to `test` folder, and type `npm install` for the first time.
+
+###Unit Tests
+----------------
+```bash
+cd test
+./test.sh
+```
+By default, `./test.sh` will run all the tests including unit tests.
 
 To run a single test file or a specific set of tests, type `./test.sh test-files`. E.g.
 
@@ -39,14 +79,14 @@ To run a single test file or a specific set of tests, type `./test.sh test-files
 ./test.sh skeleton-test.js
 ```
 
-Functional Tests
+###Functional Tests
 ----------------
 
 The developer of the tests can decide whether to skip functional tests.
 Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a certain set of tests conditionally.
 `./test.sh` will run all the tests including unit tests and functional tests.
 
-### Functional Tests for RedisCacheProvider
+####Functional Tests for RedisCacheProvider
 
 To enable functional tests for `RedisCacheProvider`, set environment variable `VCAP_SERVICES` to be
 
@@ -54,9 +94,9 @@ To enable functional tests for `RedisCacheProvider`, set environment variable `V
 VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" } }] }' ./test.sh
 ```
 
-Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `RedisCacheProvider` the element with `teenyurl-redis-cache` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON. To enable functional tests for `RedisCacheProvider` the element with `name` prefixed with `teenyurl-redis-cache` should be present.
 
-### Functional Tests for PostgreSQL Database Wrapper
+#### Functional Tests for PostgreSQL Database Wrapper
 
 To enable functional tests for `PostgreSQL`, set environment variable `VCAP_SERVICES` to be
 
@@ -64,25 +104,5 @@ To enable functional tests for `PostgreSQL`, set environment variable `VCAP_SERV
 VCAP_SERVICES='{ "postgres": [{"name" : "teenyurl-postgres", "credentials" : { "database" : "teenyurl", "username" : "postgres" }}] }' ./test.sh
 ```
 
-Please be noted: `VCAP_SERVICES` is an hash in JSON, to enable functional tests for `PostgreSQL` the element with `teenyurl-postgres` as `name` should be present.
+Please be noted: `VCAP_SERVICES` is an hash in JSON. To enable functional tests for `PostgreSQL` the element with `name` prefixed with `teenyurl-postgres` should be present.
 
-Run app or tests on local box
------------------------------
-
-With Redis and PostgreSQL running on local box, you can run app and functional tests locally:
-
-To launch the app:
-
-```bash
-source local-env.sh
-cd app
-node app
-```
-
-To run with all functional tests:
-
-```bash
-source local-env.sh
-cd test
-./test.sh
-```
