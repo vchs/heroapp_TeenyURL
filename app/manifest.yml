@@ -14,5 +14,5 @@ applications:
       tier: free
     teenyurl-redis-cache-prod: 
       vendor: redis
-      version: "2.4"
+      version: "2.6"
       tier: free
