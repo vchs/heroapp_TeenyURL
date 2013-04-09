@@ -30,7 +30,6 @@ th.when(services.postgres)
         var EXPIRE_IN = 1000; //unit is ms
         var expireAtDate = new Date(Date.now() + EXPIRE_IN);
         var dataObject =  { originalUrl: originalUrl, expireAt: expireAtDate };
-        console.log("ExpireAt 0: " + dataObject.expireAt.valueOf());
         dataAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult) {
             expect(err).to.be(null);
             expect(createResult).to.have.property("key");
@@ -40,9 +39,7 @@ th.when(services.postgres)
                 expect(fetchResult).to.not.be(null);
                 expect(fetchResult).to.have.property("originalUrl");
                 expect(fetchResult.originalUrl).to.eql(originalUrl);
-                console.log("ExpireAt 1: " + fetchResult.expireAt.valueOf());
                 setTimeout(function () {
-                    console.log("Now: " + (new Date()).valueOf());
                     dataAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
                         expect(err).to.be(null);
                         // should expire now
