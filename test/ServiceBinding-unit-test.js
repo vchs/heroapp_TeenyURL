@@ -9,18 +9,18 @@ describe("ServiceBinding", function () {
     var VCAP_SERVICES = JSON.stringify({
         "mongo-2.0": [
             { name: "something", credentials: {} },
-            { name: "teenyurl-mongodb", credentials: { url: MONGODB_URL } }
+            { name: "teenyurl-mongodb-test", credentials: { url: MONGODB_URL } }
         ],
         "postgres-9.1": [
             { name: "something", credentials: {} },
-            { name: "teenyurl-postgres", credentials: { database: "teenyurl", port: POSTGRES_PORT } }
+            { name: "teenyurl-postgres-test", credentials: { database: "teenyurl", port: POSTGRES_PORT } }
         ],
         "redis-2.6": [
             { name: "redis-2.6", credentials: {} }
         ],
         "redis-2.4": [
             { name: "redis-2.4", credentials: {} },
-            { name: "teenyurl-redis-cache", credentials: { host: REDIS_HOST, port: REDIS_PORT, password: REDIS_PASSWORD } }
+            { name: "teenyurl-redis-cache-test", credentials: { host: REDIS_HOST, port: REDIS_PORT, password: REDIS_PASSWORD } }
         ]
     });
     
