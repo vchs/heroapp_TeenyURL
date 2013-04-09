@@ -35,9 +35,9 @@ exports.asyncExpect = function (action, done, more) {
     }
     
     return function () {
-        var err = undefined;
+        var err = undefined, result;
         try {
-            action.apply(this, arguments);
+            result = action.apply(this, arguments);
         } catch (e) {
             err = e;
         }
@@ -46,6 +46,7 @@ exports.asyncExpect = function (action, done, more) {
         } else if (!more) {
             done();
         }
+        return result;
     };
 };
 
