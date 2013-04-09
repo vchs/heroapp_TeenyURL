@@ -20,13 +20,20 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-require('./routes/api').register(app);
-require('./routes/redirect').register(app);
-
-// environment variable VCAP_APP_PORT will be defined when the app is
-// running on Tempest cloud. The app must listen on this port otherwise
-// the requests can't be routed.
-var port = process.env.VCAP_APP_PORT || 3000;
-app.listen(port, function() {
-    console.log("TeenyUrl is listening on port " + port);
-});
+require('./lib/DataAccessorFactory').build(function (err, dataAccessor) {
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+    
+    require('./routes/api').register(app, dataAccessor);
+    require('./routes/redirect').register(app, dataAccessor);
+    
+    // environment variable VCAP_APP_PORT will be defined when the app is
+    // running on Tempest cloud. The app must listen on this port otherwise
+    // the requests can't be routed.
+    var port = process.env.VCAP_APP_PORT || 3000;
+    app.listen(port, function() {
+        console.log("TeenyUrl is listening on port " + port);
+    });
+});    

@@ -57,6 +57,14 @@ This queries a mapping between a shortened URL key and the original URL.
 
 The return value should be the same `IDataAccessor` instance.
 
+The implementation should provide the following method if it requires an asynchronous initialization phase (e.g. migration):
+
+```javascript
+ready(callback)
+```
+This is invoked in building data accessor. The implementation should invoke the callback in the form `function (err)` if any error happens or
+`function ()` if everything is OK.
+
 ### ICacheProvider
 `ICacheProvider` is defined for a simple key-value pair cache backend implementation. It requires two methods:
 

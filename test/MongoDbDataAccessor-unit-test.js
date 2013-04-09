@@ -7,11 +7,6 @@ describe("MongoDbDataAccessor", function () {
     function createDataAccessor (mockedShortUrl) {
         var MongoDbDataAccessor = sandbox.require("../app/lib/MongoDbDataAccessor", {
             requires: {
-                "./ServiceBinding": {
-                    mongoDb: {
-                        url: "mongodb://dummy/dummy"
-                    }
-                },
                 "mongoose": {
                     connect: function () { },
                     model: function () {
@@ -32,7 +27,7 @@ describe("MongoDbDataAccessor", function () {
                 }
             }
         });
-        return new MongoDbDataAccessor();
+        return new MongoDbDataAccessor({ url: "mongodb://dummy/dummy" });
     }
     
     MockedShortUrl = new Class({
