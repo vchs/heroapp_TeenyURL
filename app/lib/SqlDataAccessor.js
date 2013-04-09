@@ -41,7 +41,23 @@ module.exports = new Class({
     // implement IDataAccessor
     
     ready: function (callback) {
-        this.sequelize.sync().done(callback);
+        this.sequelize.sync().done(function (errs) {
+            // Postgres 9.0 workaround: SQL "CREATE TABLE IF NOT EXISTS ..." not supported
+            if (this.sequelize.options.dialect == "postgres" &&
+                Array.isArray(errs) && errs.some(function (err) {
+                    return err.name == "error" && err.code === '42601';
+                })) {
+                this.sequelize.query('CREATE TABLE "ShortUrls" ("key" VARCHAR(255) , "originalUrl" TEXT NOT NULL UNIQUE, "expireAt" TIMESTAMP WITH TIME ZONE DEFAULT NULL, PRIMARY KEY ("key"));')
+                        .done(function (errs) {
+                            if (Array.isArray(errs) && errs.length == 1 && errs[0].code === '42P07') {
+                                errs = null;
+                            }
+                            callback(errs);
+                        });
+            } else {
+                callback(errs);
+            }
+        }.bind(this));
     },
     
     create: function (dataObject, keyGenFn, callback) {
