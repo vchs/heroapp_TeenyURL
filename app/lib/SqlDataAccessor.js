@@ -17,7 +17,7 @@ module.exports = new Class({
             // the key generated uniquely for the original URL: http://teenyurl/key
             key: { type: Sequelize.STRING, primaryKey: true },
             // the original URL the key mapped to
-            originalUrl: { type: Sequelize.STRING, unique: true, allowNull: false },
+            originalUrl: { type: Sequelize.TEXT, unique: true, allowNull: false },
             // when the mapping expires
             expireAt: { type: Sequelize.DATE, defaultValue: null }
         }, {

@@ -11,27 +11,20 @@ var Services = new Class({
             }
         } catch (e) {
         }
+        var name2Property = { 
+            "redis-cache": "redisCache",
+            "mongodb": "mongoDb"
+        };
         services.forEach(function (service) {
-            switch (service.name) {
-                case "teenyurl-redis-cache":
-                    Object.defineProperty(this, "redisCache", {
-                        value: service.credentials,
-                        writable: false
-                    });
-                    break;
-                case "teenyurl-mongodb":
-                    Object.defineProperty(this, "mongoDb", {
-                        value: service.credentials,
-                        writable: false
-                    });
-                    break;
-                case "teenyurl-postgres":
-                    Object.defineProperty(this, "postgres", {
-                        value: service.credentials,
-                        writable: false
-                    });
-                    break;
+            result = /teenyurl-(redis-cache|postgres|mysql|mongodb)-?/.exec(service.name);
+            if (!result) {
+                return;
             }
+            var propertyName = name2Property[result[1]] ? name2Property[result[1]]: result[1];
+            Object.defineProperty(this, propertyName, {
+                value: service.credentials,
+                writable: false
+            });
         }, this);
     }
 });

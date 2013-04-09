@@ -4,6 +4,6 @@
 # before running the app or any functional tests.
 
 export VCAP_SERVICES='{
-    "postgres-9.1": [{"name": "teenyurl-postgres", "credentials": { "name": "teenyurl", "username": "postgres"} }]
+    "postgres-9.1": [{"name": "teenyurl-postgres-prod", "credentials": { "name": "teenyurl", "username": "postgres"} }]
 }'
 
