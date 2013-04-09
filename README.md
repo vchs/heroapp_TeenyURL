@@ -40,7 +40,7 @@ host all postgres 127.0.0.1/32 trust
 
 ##Environment setup for the app or test
 
-To use services such as Redis/PostgreSql, an environment variable VCAP_SERVICES need be set before starting the app or running the functional test. We provide several shell script files you can choose to set the environment variable easily.
+To use services such as Redis/PostgreSql, an environment variable VCAP_SERVICES need be set before starting the app or running the functional test. We provide several shell script files you can choose to set the intended environment variable.
 
 ```bash
 cd ./env
@@ -63,7 +63,6 @@ Launch the web app.
 
 ```bash
 cd app
-env | grep VCAP_SERVICES
 node app
 ```
 
@@ -78,7 +77,7 @@ Go to `test` folder, and type `npm install` for the first time.
 cd test
 ./test.sh
 ```
-By default, `./test.sh` will run all the tests including unit tests.
+By default, `test.sh` will run all unit tests, using mocha.
 
 To run a single test file or a specific set of tests, type `./test.sh test-files`. E.g.
 
@@ -90,7 +89,7 @@ To run a single test file or a specific set of tests, type `./test.sh test-files
 ----------------
 
 By providing different VCAP_SERVICES value, you can decide whether to run functional tests for certain components.
-Take a look at `helpers.js`, using `when(condition).describe(...)` to enable a certain set of tests conditionally.
+Take a look at `helpers.js`, and uses `when(condition).describe(...)` to enable a certain set of tests conditionally, just as we did in file `SqlDataAccessor-func-test.js`.
 
 For example, to test only functional testcases for `RedisCache` but skip those for `PostgreSQL`, set environment variable `VCAP_SERVICES` to be
 
