@@ -29,7 +29,8 @@ th.when(services.postgres)
         var originalUrl = ORIGINURL_PREFIX + idgen();
         var EXPIRE_IN = 1000; //unit is ms
         var expireAtDate = new Date(Date.now() + EXPIRE_IN);
-        var dataObject =  { originalUrl : originalUrl, expireAt : expireAtDate };
+        var dataObject =  { originalUrl: originalUrl, expireAt: expireAtDate };
+        console.log("ExpireAt 0: " + dataObject.expireAt.valueOf());
         dataAccessor.create(dataObject, keyGen, th.asyncExpect(function (err, createResult) {
             expect(err).to.be(null);
             expect(createResult).to.have.property("key");
@@ -39,12 +40,14 @@ th.when(services.postgres)
                 expect(fetchResult).to.not.be(null);
                 expect(fetchResult).to.have.property("originalUrl");
                 expect(fetchResult.originalUrl).to.eql(originalUrl);
+                console.log("ExpireAt 1: " + fetchResult.expireAt.valueOf());
                 setTimeout(function () {
+                    console.log("Now: " + (new Date()).valueOf());
                     dataAccessor.fetch(createResult.key, th.asyncExpect(function (err, fetchResult) {
                         expect(err).to.be(null);
                         // should expire now
                         expect(fetchResult).to.not.be.ok();
-                        var dataObjectNotExpire =  { originalUrl : originalUrl };
+                        var dataObjectNotExpire =  { originalUrl: originalUrl };
                         dataAccessor.create(dataObjectNotExpire, keyGen, th.asyncExpect(function (err, createResult2) {
                             // should be able to overwrite the expire Date
                             expect(err).to.be(null);
@@ -59,7 +62,7 @@ th.when(services.postgres)
                             }, done));
                         }, done, true));
                     }, done, true));
-                }, EXPIRE_IN + 200);
+                }, EXPIRE_IN + 500);
             }, done, true));
         }, done, true));
     });

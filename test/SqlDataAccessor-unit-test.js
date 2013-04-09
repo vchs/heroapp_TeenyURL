@@ -152,7 +152,7 @@ describe("SqlDataAccessor", function () {
         var shortUrl = {
             key: "DummyKey",
             originalUrl: "DummyUrl",
-            expireAt: new Date() - 1000
+            expireAt: new Date(Date.now() - 1000)
         };
         shortUrl.values = shortUrl;
         mockedShortUrl.mock("find", function () {
