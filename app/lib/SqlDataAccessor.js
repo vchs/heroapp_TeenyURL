@@ -48,11 +48,11 @@ module.exports = new Class({
                     return err.name == "error" && err.code === '42601';
                 })) {
                 this.sequelize.query('CREATE TABLE "ShortUrls" ("key" VARCHAR(255) , "originalUrl" TEXT NOT NULL UNIQUE, "expireAt" TIMESTAMP WITH TIME ZONE DEFAULT NULL, PRIMARY KEY ("key"));')
-                        .done(function (errs) {
-                            if (Array.isArray(errs) && errs.length == 1 && errs[0].code === '42P07') {
-                                errs = null;
+                        .done(function (err) {
+                            if (err && err.code === '42P07') {
+                                err = null;
                             }
-                            callback(errs);
+                            callback(err);
                         });
             } else {
                 callback(errs);
