@@ -11,8 +11,8 @@
         "sandboxed-module": "0.2.0",
         "mootools": "1.4.5",
         "idgen": "1.2.0",
-        "zombie": "",
-        "strftime": "",
-        "sleep": ""
+        "zombie": "1.4.1",
+        "strftime": "0.5.2",
+        "sleep": "1.1.0"
     }
 }

@@ -14,7 +14,7 @@ function connectRedis(connInfo) {
         logError(err);
     }).on("ready", function () {
         // disable persistency as Redis is only used for caching
-        client.config("set", "save", "");
+        client.config("set", "save", "", function () { });
     });
 
     if (connInfo.password) {
