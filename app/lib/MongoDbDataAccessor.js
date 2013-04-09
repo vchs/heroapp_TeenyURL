@@ -26,29 +26,21 @@ shortUrlSchema.methods.toDataObject = function () {
 
 var ShortUrl = mongoose.model("ShortUrl", shortUrlSchema, "shorturl");
 
-var connInfo;
-
-function connectMongoDb() {
-    if (!connInfo) {
-        connInfo = require("./ServiceBinding").mongoDb;
-        if (connInfo && connInfo.url) {
-            mongoose.connect(connInfo.url);
-        } else {
-            throw new Error("No service binding for MongoDB");
-        }        
-    }
-}
-
 var DUP_KEY_ERROR = 11000;  // the error code from MongoDB for key duplication error
 
 module.exports = new Class({
 
-    initialize: function () {
-        connectMongoDb();
+    initialize: function (connInfo) {
+        this.url = connInfo.url;
     },
 
     // implement IDataAccessor
 
+    ready: function (callback) {
+        mongoose.connect(this.url);
+        callback();
+    },
+    
     create: function (dataObject, keyGenFn, callback) {
         // when original URL already exists, only expiration is updated
         asyncTry(function (tries) {

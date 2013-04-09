@@ -1,9 +1,7 @@
 // This module routes the access to shortened URL by redirecting to
 // the original URL.
 
-var dataAccessor = require("../lib/DataAccessorFactory").build();
-
-exports.register = function (app) {
+exports.register = function (app, dataAccessor) {
     // The URL accessed will be http(s)://teenyurl(.domain)/key
     app.get("/:key", function (req, res) {
         var key = req.params.key;

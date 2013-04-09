@@ -4,9 +4,6 @@
 var url = require("url"),
     idgen = require("idgen");
 
-// build the data accessing layer here.
-var dataAccess = require("../lib/DataAccessorFactory").build();
-
 /** Shortened URL key generation function
  * This function will be invoked by data accessing layer
  * when a new URL key (http://teenyurl/<URL key>) is needed.
@@ -39,7 +36,7 @@ function respondOk(res, dataObject) {
 }
 
 // registers URL patterns for routing
-exports.register = function (app) {
+exports.register = function (app, dataAccessor) {
 
     // a simple check to ensure the submitted URL is valid
     function validateUrl(inputUrl) {
@@ -96,7 +93,7 @@ exports.register = function (app) {
                 dataObject.expireAt = expireAt;
             }
 
-            dataAccess.create(dataObject, keyGenFn, function (err, dataObject) {
+            dataAccessor.create(dataObject, keyGenFn, function (err, dataObject) {
                 if (err) {
                     console.error(err);
                     respondError(res, "Server error.");
