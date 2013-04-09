@@ -8,11 +8,11 @@ applications:
   url: teenyurl.${target-base}
   path: .
   services: 
-    teenyurl-postgres-prod: 
+    teenyurl-postgres: 
       vendor: postgresql
       version: "9.0"
       tier: free
-    teenyurl-redis-cache-prod: 
+    teenyurl-redis-cache: 
       vendor: redis
       version: "2.6"
       tier: free

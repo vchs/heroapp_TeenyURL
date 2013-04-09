@@ -12,14 +12,15 @@ var Services = new Class({
         } catch (e) {
         }
         var name2Property = { 
-            "redis-cache" : "redisCache",
-            "mongodb" : "mongoDb"
+            "redis-cache": "redisCache",
+            "mongodb": "mongoDb"
         };
         services.forEach(function (service) {
-            result = /teenyurl-(redis-cache|postgres|mysql|mongodb)/.exec(service.name);
-            if (!result) 
+            result = /teenyurl-(redis-cache|postgres|mysql|mongodb)-?/.exec(service.name);
+            if (!result) {
                 return;
-            var propertyName = name2Property[result[1]] ? name2Property[result[1]] : result[1];
+            }
+            var propertyName = name2Property[result[1]] ? name2Property[result[1]]: result[1];
             Object.defineProperty(this, propertyName, {
                 value: service.credentials,
                 writable: false

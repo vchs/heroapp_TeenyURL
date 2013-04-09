@@ -9,7 +9,7 @@ Teenyurl is written with nodejs and express framework. It can run either on Plat
 --------------
 `App` Folder contains code for the web app. File `manifest.yml` in this folder already contains the info needed so you can directly push the app to Tempest/Cloud Foundry.
 
-You can always customize the manifest such as binding services with different names for the production and the staging. When changing service names, make sure new names still contain the earlier prefix. Our code relies on these perfixes to bind the service. For example, for PostgreSql service, it should be prefixed with 'teenyurl-postgres', for redis, the prefix is 'teenyurl-redis-cache'.
+You can always customize the manifest such as binding services with different names. We recommend you change service name by adding suffix, such as add `-qa` for test app. In this way, new names still contain the earlier prefix, on which our code relies to bind the service. For example, for PostgreSql service, service names should be prefixed with 'teenyurl-postgres'.
 
 
 #Run app in your local box
