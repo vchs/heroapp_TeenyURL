@@ -41,9 +41,8 @@ Another example: [Using Cloud Foundry MongoDB services from Node.js applications
 
 
 To use redis as cache, you need start a redis server
-```
-cd /path/to/redis
-./redis-server
+```bash
+redis-server
 ```
 
 Start your postgresql server and create a database 'teenyurl'.
@@ -65,8 +64,7 @@ host all postgres 127.0.0.1/32 trust
 To use services such as Redis/PostgreSql, an environment variable VCAP_SERVICES need be set before starting the app or running the functional test. We provide several shell script files you can choose to set the intended environment variable.
 
 ```bash
-cd ./env
-source local-postgres.sh
+source ./env/local-postgres.sh
 ```
 Note: we assume your postgresql process runs under account 'postgres'.  If not, please update the preconfigured 'username' within ./local-postgres.sh accordingly.
 
@@ -84,7 +82,12 @@ After setting environment variables, go to `app` folder, and type `npm install` 
 Launch the web app.
 
 ```bash
-cd app
+npm start
+```
+
+or
+
+```bash
 node app
 ```
 
@@ -96,16 +99,9 @@ Go to `test` folder, and type `npm install` for the first time.
 ###Unit Tests
 ----------------
 ```bash
-cd test
-./test.sh
+npm test
 ```
-By default, `test.sh` will run all unit tests, using mocha.
-
-To run a single test file or a specific set of tests, type `./test.sh test-files`. E.g.
-
-```bash
-./test.sh skeleton-test.js
-```
+By default, it will run all unit tests, using mocha.
 
 ###Functional Tests
 ----------------
@@ -118,3 +114,5 @@ For example, to test only functional testcases for `RedisCache` but skip those f
 ```bash
 VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" } }] }' ./test.sh
 ```
+
+You can also source files from `env` folder.
