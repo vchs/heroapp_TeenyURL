@@ -1,7 +1,7 @@
 var expect = require("expect.js"),
     idgen = require("idgen"),
-    services = require("../app/lib/ServiceBinding"),
-    SqlDataAccessor = require("../app/lib/SqlDataAccessor"),
+    services = require("../lib/ServiceBinding"),
+    SqlDataAccessor = require("../lib/SqlDataAccessor"),
     th = require("./helpers");
 
 var keyGen = function generate_key(dataObject, callback){

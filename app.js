@@ -7,9 +7,12 @@ var path = require('path');
 
 var app = express();
 
+app.configure('development', function () {
+    app.use(express.logger('dev'));    
+});
+
 app.configure(function() {
     app.use(express.favicon(path.join(__dirname, '/public/img/favicon.ico')));
-    app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);

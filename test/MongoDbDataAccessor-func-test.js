@@ -1,6 +1,6 @@
 var expect = require("expect.js"),
     idgen = require("idgen"),
-    services = require("../app/lib/ServiceBinding"),
+    services = require("../lib/ServiceBinding"),
     th = require("./helpers");
 
 var keyGen = function generate_key(dataObject, callback){
@@ -13,7 +13,7 @@ th.when(services.mongoDb)
     var mongodbAccessor;
 
     before(function (done) {
-        var MongoDbDataAccessor = require("../app/lib/MongoDbDataAccessor");
+        var MongoDbDataAccessor = require("../lib/MongoDbDataAccessor");
         mongodbAccessor = new MongoDbDataAccessor(services.mongoDb);
         mongodbAccessor.ready(done);
     });

@@ -29,7 +29,7 @@ You can always customize the manifest such as binding services with different na
 
 Tempest or Cloud Foundry provide the environment variable for node.js application to bind the server port and services(PostgreSql or Redis) configration.
 
-The environment variables are VCAP_APP_PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app/app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app/app.js) and [app/lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app/lib/ServiceBinding.js).
+The environment variables are VCAP_APP_PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
 
 Another example: [Using Cloud Foundry MongoDB services from Node.js applications](http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html)
 
@@ -41,9 +41,8 @@ Another example: [Using Cloud Foundry MongoDB services from Node.js applications
 
 
 To use redis as cache, you need start a redis server
-```
-cd /path/to/redis
-./redis-server
+```bash
+redis-server
 ```
 
 Start your postgresql server and create a database 'teenyurl'.
@@ -65,8 +64,7 @@ host all postgres 127.0.0.1/32 trust
 To use services such as Redis/PostgreSql, an environment variable VCAP_SERVICES need be set before starting the app or running the functional test. We provide several shell script files you can choose to set the intended environment variable.
 
 ```bash
-cd ./env
-source local-postgres.sh
+source ./env/local-postgres.sh
 ```
 Note: we assume your postgresql process runs under account 'postgres'.  If not, please update the preconfigured 'username' within ./local-postgres.sh accordingly.
 
@@ -84,7 +82,12 @@ After setting environment variables, go to `app` folder, and type `npm install` 
 Launch the web app.
 
 ```bash
-cd app
+npm start
+```
+
+or
+
+```bash
 node app
 ```
 
@@ -96,16 +99,9 @@ Go to `test` folder, and type `npm install` for the first time.
 ###Unit Tests
 ----------------
 ```bash
-cd test
-./test.sh
+npm test
 ```
-By default, `test.sh` will run all unit tests, using mocha.
-
-To run a single test file or a specific set of tests, type `./test.sh test-files`. E.g.
-
-```bash
-./test.sh skeleton-test.js
-```
+By default, it will run all unit tests, using mocha.
 
 ###Functional Tests
 ----------------
@@ -118,3 +114,5 @@ For example, to test only functional testcases for `RedisCache` but skip those f
 ```bash
 VCAP_SERVICES='{ "redis": [{"name": "teenyurl-redis-cache", "credentials": { "host": "YOUR_REDIS_HOST", "port": YOUR_REDIS_PORT, "password": "YOUR_REDIS_PASSWORD" } }] }' ./test.sh
 ```
+
+You can also source files from `env` folder.

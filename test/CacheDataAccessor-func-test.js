@@ -1,5 +1,5 @@
 var expect = require("expect.js"),
-    service = require("../app/lib/ServiceBinding"),
+    service = require("../lib/ServiceBinding"),
     th = require("./helpers");
 
 th.when(service.redisCache && (service.postgres || service.mongoDb))
@@ -20,7 +20,7 @@ th.when(service.redisCache && (service.postgres || service.mongoDb))
     var accessor;
     
     before(function (done) {
-        require("../app/lib/DataAccessorFactory").build(function (err, dataAccessor) {
+        require("../lib/DataAccessorFactory").build(function (err, dataAccessor) {
             accessor = dataAccessor;
             done(err);
         });

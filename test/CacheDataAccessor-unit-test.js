@@ -1,5 +1,5 @@
 var expect = require("expect.js"),
-    CacheDataAccessor = require("../app/lib/CacheDataAccessor"),
+    CacheDataAccessor = require("../lib/CacheDataAccessor"),
     th = require("./helpers");
 
 var ID_KEY = "generated_key";
