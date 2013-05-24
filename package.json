@@ -1,0 +1,28 @@
+{
+    "name": "teenyurl",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node app",
+        "test": "mocha --reporter list -r mootools test/*-test.js"
+    },
+    "dependencies": {
+        "express": "3.0.3",
+        "mongoose": "3.4.0",
+        "sequelize-postgres": "1.6.0",
+        "redis": "0.8.2",
+        "mootools": "1.4.5",
+        "async": "0.2.5",
+        "idgen": "1.2.0"
+    },
+    "optionalDependencies": {
+        "hiredis": "0.1.14"        
+    },
+    "devDependencies": {
+        "mocha": "1.7.3",
+        "expect.js": "0.2.0",
+        "sandboxed-module": "0.2.0",
+        "zombie": "1.4.1",
+        "strftime": "0.5.2"
+    }
+}

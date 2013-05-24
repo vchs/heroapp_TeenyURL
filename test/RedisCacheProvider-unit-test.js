@@ -5,7 +5,7 @@ var expect  = require("expect.js"),
 describe("RedisCacheProvider", function () {
     
     function createProvider(mockedClient) {
-        var RedisCacheProvider = sandbox.require("../app/lib/RedisCacheProvider", {
+        var RedisCacheProvider = sandbox.require("../lib/RedisCacheProvider", {
             requires: {
                 "redis": {
                     createClient: function () { return mockedClient; }

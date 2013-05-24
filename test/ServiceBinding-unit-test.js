@@ -27,7 +27,7 @@ describe("ServiceBinding", function () {
     var services;
     
     before(function () {
-        services = sandbox.require("../app/lib/ServiceBinding", {
+        services = sandbox.require("../lib/ServiceBinding", {
             globals: {
                 process: {
                     env: { "VCAP_SERVICES": VCAP_SERVICES }

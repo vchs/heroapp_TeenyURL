@@ -5,7 +5,7 @@ var expect  = require("expect.js"),
 describe("MongoDbDataAccessor", function () {
    
     function createDataAccessor (mockedShortUrl) {
-        var MongoDbDataAccessor = sandbox.require("../app/lib/MongoDbDataAccessor", {
+        var MongoDbDataAccessor = sandbox.require("../lib/MongoDbDataAccessor", {
             requires: {
                 "mongoose": {
                     connect: function () { },

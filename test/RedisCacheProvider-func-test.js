@@ -1,5 +1,5 @@
 var expect = require("expect.js"),
-    services = require("../app/lib/ServiceBinding"),
+    services = require("../lib/ServiceBinding"),
     th = require("./helpers");
 
 th.when(services.redisCache)
@@ -10,7 +10,7 @@ th.when(services.redisCache)
     var VAL = "RedisCacheProvider-test-val";
     
     before(function () {
-        var RedisCacheProvider = require("../app/lib/RedisCacheProvider");
+        var RedisCacheProvider = require("../lib/RedisCacheProvider");
         provider = new RedisCacheProvider(services.redisCache);
     });
     

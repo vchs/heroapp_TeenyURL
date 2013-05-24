@@ -5,9 +5,9 @@ var expect  = require("expect.js"),
 describe("SqlDataAccessor", function () {
     
     function createDataAccessor(mockedShortUrl) {
-        var SqlDataAccessor = sandbox.require("../app/lib/SqlDataAccessor", {
+        var SqlDataAccessor = sandbox.require("../lib/SqlDataAccessor", {
             requires: {
-                "sequelize-postgres": {
+                "sequelize-dummy": {
                     sequelize: new Class({
                         initialize: function () {
                             
