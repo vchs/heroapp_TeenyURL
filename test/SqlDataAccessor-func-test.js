@@ -8,13 +8,12 @@ var keyGen = function generate_key(dataObject, callback){
     callback(null, idgen());
 };
 
-th.when(services.postgres)
-  .describe("SqlDataAccessor.Functional", function () {
+function test(adapter) {
     var ORIGINURL_PREFIX = "http://docs.cloudfoundry.com/";
     var dataAccessor;
 
     before(function (done) {
-        dataAccessor = new SqlDataAccessor("postgres", services.postgres);
+        dataAccessor = new SqlDataAccessor(adapter, services[adapter]);
         dataAccessor.ready(done);
     });
 
@@ -63,4 +62,14 @@ th.when(services.postgres)
             }, done, true));
         }, done, true));
     });
+};
+
+th.when(services.mysql)
+  .describe("SqlDataAccessor.Functional MySQL", function () {
+    test("mysql");
+});
+  
+th.when(services.postgres)
+  .describe("SqlDataAccessor.Functional Postgresql", function () {
+    test("postgres");
 });
