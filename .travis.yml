@@ -1,7 +1,8 @@
 language: node_js
 node_js:
-  - "0.6"
+  - "0.8"
 before_script:
+  - mysql -e 'create database teenyurl;'
   - psql -c 'create database teenyurl;' -U postgres
 script: "./test/ci.sh"
 services:

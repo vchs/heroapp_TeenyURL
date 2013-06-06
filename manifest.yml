@@ -2,17 +2,13 @@
 applications: 
 - name: teenyurl
   framework: node
-  runtime: node06
+  runtime: node08
   memory: 64M
   instances: 1
   url: teenyurl.${target-base}
   path: .
   services: 
-    teenyurl-postgres: 
-      vendor: postgresql
-      version: "9.0"
-      tier: free
-    teenyurl-redis-cache: 
-      vendor: redis
-      version: "2.6"
+    teenyurl-mysql: 
+      vendor: mysql
+      version: "5.1"
       tier: free

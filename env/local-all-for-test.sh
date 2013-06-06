@@ -5,7 +5,8 @@
 
 export VCAP_SERVICES='{
     "redis-2.6": [{"name": "teenyurl-redis-cache", "credentials": { "host": "localhost", "port": 6379 } }],
-    "postgres-9.1": [{"name": "teenyurl-postgres", "credentials": { "name": "teenyurl", "username": "postgres"} }],
+    "mysql-5.1": [{"name": "teenyurl-mysql", "credentials": { "name": "teenyurl", "username": "root" } }],
+    "postgres-9.1": [{"name": "teenyurl-postgres-prod", "credentials": { "name": "teenyurl", "username": "postgres"} }],
     "mongo-2.0": [{"name": "teenyurl-mongodb", "credentials": { "url": "mongodb://localhost/teenyurl"} }]
 }'
 
