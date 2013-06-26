@@ -32,7 +32,11 @@ $('#url_submit').click(function(){
                     $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
                 } else {
                     var shortUrl = window.location.href + data.key;
-                    $('#short_url').text(shortUrl).attr("href", shortUrl);
+                    $('#short_url')
+                        .text(shortUrl)
+                        .attr("href", shortUrl)
+                        .fadeOut()
+                        .fadeIn();
                     $('#copy_button').attr("data-clipboard-text", shortUrl);
                     $('#alert_error').css("display", "none");
                 }

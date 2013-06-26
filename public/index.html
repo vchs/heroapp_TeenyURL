@@ -2,45 +2,34 @@
 <html>
 <head>
     <title>Tempest TeenyUrl</title>
-    <link rel="stylesheet" href="css/index.css" media="screen">
     <link rel="stylesheet" href="css/jquery-ui-timepicker-addon.css" media="screen">
     <link rel="stylesheet" href="css/jquery-ui-1.10.1.custom.min.css" media="screen">
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="css/index.css" media="screen">
 </head>
 <body>
     <div class="container">
-        <div class="nav-header"></div>
-        <div class="content">
-            <div class="container-inner">
-                <h1 class="logo">
-                    TeenyURL
-                </h1>
-                <h1 class="pump-up">
-                    Hi, please input your original URL:
-                </h1>
-                <div id="alert_error" class="alert alert-error">
-                    error
-                </div>
-                <div class="input-area">
-                    <ul class="item-stream unstyled">
-                        <li class="stream-item">
-                            <form class="form-inline url-form" action="" method="post">
-                                <input id="original_url" type="text" class="original-url input-xxlarge" name="originalUrl" placeholder="http://">
-                                <button class="btn btn-large btn-primary" id="url_submit">Shorten</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                <div class="input-area optional-text">
-                    The shortened URL will expire at:  <input id="expire_at" type="text" class="expire-at" name="expireAt" value> (optional)
-                </div>
-
-                <h1 class="pump-up">
-                    <a id="short_url" href="shortUrl">shortUrl</a>
-                    <button id="copy_button" class="btn btn-inverse" data-clipboard-text="shortUrl">Copy</button>
-                </h1>
-                <div id="alert_success" class="alert alert-success">
-                    success
+        <div class="span8 offset2">
+            <div class="nav-header"></div>
+            <div class="content">
+                <div class="container-inner">
+                    <p class="logo">TeenyURL</p>
+                    <p><b>Paste your long URL here: </b></p>
+                    <div id="alert_error" class="alert alert-error" style="display:none;">error</div>
+                    <div class="input-area">
+                        <form class="form-inline url-form" action="" method="post">
+                            <input id="original_url" type="text" class="original-url input-xxlarge" name="originalUrl" placeholder="http://">
+                            <button class="btn btn-large btn-primary" id="url_submit">Shorten</button>
+                        </form>
+                    </div>
+                    <div class="input-area optional-text">
+                        The shortened URL will expire at:  <input id="expire_at" type="text" class="expire-at" name="expireAt" value> (optional)
+                    </div>
+                    <p>
+                        <a id="short_url" class="result-url" href="shortUrl" title="Please copy the short url"></a>
+                        <button id="copy_button" class="btn btn-inverse btn-small" data-clipboard-text="shortUrl">Copy</button>
+                    </p>
+                    <div id="alert_success" class="alert alert-success" style="display:none;">success</div>
                 </div>
             </div>
         </div>

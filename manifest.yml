@@ -1,6 +1,6 @@
 --- 
 applications: 
-- name: teenyurl
+- name: teenyurl-dev-khalil
   framework: node
   runtime: node08
   memory: 64M
