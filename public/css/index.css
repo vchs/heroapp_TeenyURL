@@ -23,8 +23,8 @@ body {
 .logo {
     color: #08c;
     text-align: right;
-    font-size: 22px;
-    line-height: 2;
+    font-size: 36px;
+    line-height: 1;
     font-weight: bold;
 }
 
@@ -75,4 +75,8 @@ body {
 
 .optional-text {
     color: #9e9e9e;
+}
+
+#copy_button {
+    margin-left: 20px;
 }

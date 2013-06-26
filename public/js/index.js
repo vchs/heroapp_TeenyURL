@@ -7,7 +7,7 @@ $(document).ready(function(){
     if (flashVersion.major >= 10) {
         var clip = new ZeroClipboard( $('#copy_button'), { moviePath: "js/ZeroClipboard.swf" } );
         clip.on( 'complete', function(client, args) {
-            $('#alert_success').css("display", "block").text("Copy successfully!");
+            $('#alert_success').css("display", "block").text("Copied successfully!");
             $('#alert_success').delay(2 * 1000).fadeOut();
         } );
         $('#copy_button').attr("data-clipboard-text", window.location.href);
