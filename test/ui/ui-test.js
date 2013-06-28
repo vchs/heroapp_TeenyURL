@@ -33,7 +33,7 @@ describe("Teeny URL UI automation - ", function() {
                 assert.ok(browser.success);
                 assert.equal(browser.text("title"), "Tempest TeenyUrl");
                 assert.ok(browser.text(':contains("TeenyURL")'));
-                assert.ok(browser.text(':contains("Hi, please input your original URL:")'));
+                assert.ok(browser.text(':contains("Paste your long URL here (http and https OK):")'));
                 assert.ok(browser.text(':contains("The shortened URL will expire at")'));
                 assert.ok(browser.text(':contains("Shorten")'));
                 assert.ok(browser.query("#copy_button"));
