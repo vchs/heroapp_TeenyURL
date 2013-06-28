@@ -44,6 +44,8 @@ $('#url_submit').click(function(){
                 $('#alert_error').css({'display': 'block', 'color': 'red'}).text(data.message);
                 $('#short_url').text(window.location.href + "KEY").attr("href", window.location.href);
             }
+
+            $('#original_url').get(0).focus();
         }
     );
     return false;
