@@ -1,14 +1,14 @@
---- 
-applications: 
-- name: teenyurl
-  framework: node
-  runtime: node08
-  memory: 64M
+---
+applications:
+- name: teenyurl-james
+  memory: 128M
   instances: 1
-  url: teenyurl.${target-base}
+  host: tiny
+  domain: cfapps.io
   path: .
-  services: 
-    teenyurl-mysql: 
-      vendor: mysql
-      version: "5.1"
-      tier: free
+  services:
+    teenyurl-mysql-prod:
+      label: cleardb
+      provider: cleardb
+      version: n/a
+      plan: spark
