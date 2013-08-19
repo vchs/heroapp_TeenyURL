@@ -23,6 +23,14 @@ For the frontend, the teenyURL is a typical one page application. It uses bootst
 --------------
 `App` Folder contains code for the web app. File `manifest.yml` in this folder already contains the info needed so you can directly push the app to Tempest/Cloud Foundry.
 
+Note: If you test on run.pivotal.io, the Marketplace services for Postgres (ElephantSQL) and MySQL (ClearDB) use different attributes. If you push with ClearDB MySQL as shown in the manifest.yml it should work with a simple set of steps.
+
+```
+git clone https://github.com/vchs/heroapp-TeenyURL.git
+cd heroapp-TeenyURL
+cf push
+``` 
+
 You can always customize the manifest such as binding services with different names. We recommend you change service name by adding suffix, such as add `-qa` for test app. In this way, new names still contain the earlier prefix, on which our code relies to bind the service. For example, for PostgreSql service, service names should be prefixed with 'teenyurl-postgres'.
 
 ##Bind to Tempest or CF services
