@@ -29,7 +29,7 @@ You can always customize the manifest such as binding services with different na
 
 Tempest or Cloud Foundry provide the environment variable for node.js application to bind the server port and services(PostgreSql or Redis) configration.
 
-The environment variables are VCAP_APP_PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
+The environment variables are PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
 
 Another example: [Using Cloud Foundry MongoDB services from Node.js applications](http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html)
 

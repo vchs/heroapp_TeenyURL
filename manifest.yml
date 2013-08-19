@@ -1,9 +1,9 @@
 ---
 applications:
-- name: teenyurl-james
+- name: teenyurl
   memory: 128M
   instances: 1
-  host: tiny
+  host: tiny-${random-word}
   domain: cfapps.io
   path: .
   services:
