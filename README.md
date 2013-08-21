@@ -7,7 +7,7 @@ TeenyURL is a very cool web application. It turns a very long URL into a much sh
 #Introduction of techniques
 --------------
 
-Teenyurl is written with node.js and express framework. It can run either on Platform such as VMware Tempest or Cloud Foundry, or in your local box. It uses PostgreSql preferably to store persistent data, and Redis as cache (optional). But the service binding logic is well-designed so you can easily bind it to other services such as mongodb, mysql etc.
+Teenyurl is written with node.js and express framework. It can run either on Platform such as VMware Tempest or Cloud Foundry, or in your local box. It uses PostgreSql preferably to store persistent data, and Redis as cache (optional). But the service binding logic is well-designed so you can easily bind it to other services such as mysql etc.
 
 __Node.js__ is a server-side software system designed for writing scalable Internet applications, notably web servers. The teenyURL is a simple application. So it uses the node.js to implement the backend services which access the PostgreSql database and Redis cache server and exposes several RESTful APIs. 
 
@@ -38,8 +38,6 @@ You can always customize the manifest such as binding services with different na
 Tempest or Cloud Foundry provide the environment variable for node.js application to bind the server port and services(PostgreSql or Redis) configration.
 
 The environment variables are PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
-
-Another example: [Using Cloud Foundry MongoDB services from Node.js applications](http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html)
 
 
 #Run app in your local box
