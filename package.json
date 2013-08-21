@@ -9,6 +9,7 @@
     "dependencies": {
         "express": "3.0.3",
         "sequelize-mysql": "1.6.0",
+        "sequelize-postgres": "1.6.0",
         "redis": "0.8.2",
         "mootools": "1.4.5",
         "async": "0.2.5",
