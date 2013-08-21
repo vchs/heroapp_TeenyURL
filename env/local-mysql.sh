@@ -1,5 +1,5 @@
 # This file provides the environment needed for running TeenyURL with
-# Redis and MongoDB running on localhost. Please do
+# Redis running on localhost. Please do
 #    bash> source local-env.sh
 # before running the app or any functional tests.
 

@@ -6,5 +6,4 @@ before_script:
   - psql -c 'create database teenyurl;' -U postgres
 script: "./test/ci.sh"
 services:
-  - mongodb
   - redis-server
