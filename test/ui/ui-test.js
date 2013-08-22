@@ -27,7 +27,6 @@ describe("Teeny URL UI automation - ", function() {
     });
   
     it("check wording on homepage", function(done) {
-        console.log('SITE: ' + SITE);
         browser.on("error", done)
             .visit(SITE) //visit homepage and check related items
             .then(function() {
