@@ -1,6 +1,7 @@
 ---
 applications:
 - name: teenyurl
+  command: node app.js
   memory: 128M
   instances: 1
   host: tiny-${random-word}
