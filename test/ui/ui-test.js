@@ -17,6 +17,7 @@ function expects(fn, handler, final) {
 describe("Teeny URL UI automation - ", function() {
     console.log(process.env.SITE);
     var SITE = process.env.SITE || "http://localhost:3000";
+    console.log(SITE);
     var ORIGINAL_URL = "http://www.google.com";
     var INVALID_URL  = "invalidUrl";
     var EXPIRED_DATE = "01/01/2012 00:00";
