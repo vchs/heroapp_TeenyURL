@@ -4,6 +4,6 @@
 # before running the app or any functional tests.
 
 export VCAP_SERVICES='{
-    "mysql-5.1": [{"name": "teenyurl-mysql-prod", "credentials": { "name": "teenyurl", "username": "root" } }]
+    "mysql-5.1": [{"name": "teenyurl-mysql-prod", "credentials": { "name": "teenyurl", "username": "root", "uri": "mysql://root:@localhost:3306/teenyurl?reconnect=true" } }]
 }'
 
