@@ -31,16 +31,24 @@ cd heroapp-TeenyURL
 cf push
 ``` 
 
+If you want to push with ElephantSQL, please modify the `service` section in the manifest.yml as below before proceed with the above steps:
+
+```yaml
+services:
+  teenyurl-postgres-prod:
+    label: elephantsql
+    provider: elephantsql
+    version: n/a
+    plan: turtle
+```
+
 You can always customize the manifest such as binding services with different names. We recommend you change service name by adding suffix, such as add `-qa` for test app. In this way, new names still contain the earlier prefix, on which our code relies to bind the service. For example, for PostgreSql service, service names should be prefixed with 'teenyurl-postgres'.
 
 ##Bind to Tempest or CF services
 
 Tempest or Cloud Foundry provide the environment variable for node.js application to bind the server port and services(PostgreSql or Redis) configration.
 
-The environment variables are PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vmw-tmpst/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
-
-Another example: [Using Cloud Foundry MongoDB services from Node.js applications](http://docs.cloudfoundry.com/services/mongodb/nodejs-mongodb.html)
-
+The environment variables are PORT and VCAP_SERVICES. You can take a look how we parse the variables in the [app.js](https://github.com/vchs/heroapp-TeenyURL/blob/master/app.js) and [lib/ServiceBinding.js](https://github.com/vchs/heroapp-TeenyURL/blob/master/lib/ServiceBinding.js).
 
 #Run app in your local box
 --------------

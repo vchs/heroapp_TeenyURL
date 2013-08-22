@@ -32,7 +32,7 @@ require('./lib/DataAccessorFactory').build(function (err, dataAccessor) {
     require('./routes/api').register(app, dataAccessor);
     require('./routes/redirect').register(app, dataAccessor);
     
-    // environment variable VCAP_APP_PORT will be defined when the app is
+    // environment variable PORT will be defined when the app is
     // running on Tempest cloud. The app must listen on this port otherwise
     // the requests can't be routed.
     var port = process.env.PORT || 3000;
